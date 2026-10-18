@@ -59,7 +59,7 @@ const dot = (latlng, color, r = 7, opts = {}) =>
   L.circleMarker(latlng, { radius: r, color: "#fff", weight: 2, fillColor: color, fillOpacity: 0.95, ...opts });
 
 // One top bar for every page, so it never shifts when switching tabs
-const NAV = [["/", "Donate"], ["/ngo", "NGO inbox"], ["/control", "Control room"], ["/forecast", "Forecast"], ["/dashboard", "Impact"]];
+const NAV = [["/explore", "Explore"], ["/", "Donate"], ["/ngo", "NGO inbox"], ["/control", "Control room"], ["/forecast", "Forecast"], ["/dashboard", "Impact"]];
 document.head.insertAdjacentHTML("beforeend", "<style>html{scrollbar-gutter:stable}</style>");
 function renderTopbar() {
   const h = document.getElementById("topbar");

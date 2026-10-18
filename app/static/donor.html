@@ -31,6 +31,12 @@
           <span id="dropText" class="text-emerald-700 font-medium">📷 Take or choose a photo</span>
           <input id="photo" type="file" accept="image/*" capture="environment" class="hidden" />
         </label>
+        <div id="samplesBox" class="mt-4">
+          <div class="flex items-center gap-2 text-xs text-slate-500"><span class="h-px flex-1 bg-slate-200"></span>or try a sample dish<span class="h-px flex-1 bg-slate-200"></span></div>
+          <p class="text-[11px] text-slate-400 mt-1.5">No food photo handy? Pick one. It runs exactly the same real Gemini analysis as your own photo.</p>
+          <div id="samples" class="mt-2 grid grid-cols-4 gap-2"></div>
+          <button id="moreSamples" class="hidden mt-2 text-xs text-emerald-700">Show all dishes ▾</button>
+        </div>
         <div id="analysing" class="hidden mt-3 text-sm text-emerald-700 animate-pulse">Gemini is analysing the photo…</div>
         <div id="photoErr" class="hidden mt-3 text-sm text-rose-700"></div>
       </div>
@@ -39,6 +45,7 @@
       <div id="stepConfirm" class="hidden bg-white rounded-xl border p-4 space-y-3">
         <h2 class="font-semibold">2 · Check and confirm</h2>
         <div id="analysisCard" class="rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-sm"></div>
+        <div id="sampleNote" class="hidden text-xs rounded-lg bg-amber-50 border border-amber-200 text-amber-800 px-3 py-2"></div>
         <div class="grid grid-cols-2 gap-3 text-sm">
           <label>Servings<input id="servings" type="number" min="1" class="mt-1 w-full border rounded-lg px-3 py-2" /></label>
           <label>Food type
@@ -84,7 +91,7 @@ async function init() {
   const [cfg, d, n] = await Promise.all([api("/api/config"), api("/api/donors"), api("/api/ngos")]);
   donors = d; ngos = n;
   $("donor").innerHTML = donors.map((x) => `<option value="${x.donor_id}">${esc(x.name)} · ${esc(x.locality)}</option>`).join("");
-  $("donor").onchange = showDonor; showDonor(); drawNgos();
+  $("donor").onchange = showDonor; showDonor(); drawNgos(); loadSamples();
   const t = new Date(Date.now() - 60 * 60000); $("cookedAt").value = t.toTimeString().slice(0, 5);
   const existing = new URLSearchParams(location.search).get("donation");  // shareable live-status link
   if (existing) {
@@ -115,17 +122,41 @@ function drawNgos(matches) {
   });
 }
 
-$("photo").onchange = async (e) => {
-  file = e.target.files[0]; if (!file) return;
+let fromSample = null; // dish name when a sample photo is used
+const SAMPLE_BATCH = 25;  // sample photos show one plate; a kitchen donates a batch
+
+async function analyseFile(f) {
+  file = f;
   $("preview").src = URL.createObjectURL(file); $("preview").classList.remove("hidden"); $("dropText").classList.add("hidden");
-  $("analysing").classList.remove("hidden"); $("photoErr").classList.add("hidden");
+  $("analysing").classList.remove("hidden"); $("photoErr").classList.add("hidden"); $("stepConfirm").classList.add("hidden");
+  document.querySelectorAll("#samples button").forEach((b) => (b.disabled = true));
   const fd = new FormData(); fd.append("donor_id", $("donor").value); fd.append("photo", file);
   try {
     const r = await api("/api/donations", { method: "POST", body: fd });
     donation = r; showAnalysis(r.analysis);
   } catch (err) { $("photoErr").textContent = err.message; $("photoErr").classList.remove("hidden"); }
   $("analysing").classList.add("hidden");
-};
+  document.querySelectorAll("#samples button").forEach((b) => (b.disabled = false));
+}
+
+$("photo").onchange = (e) => { if (e.target.files[0]) { fromSample = null; analyseFile(e.target.files[0]); } };
+
+async function loadSamples() {
+  const list = await api("/api/samples").catch(() => []);
+  if (!list.length) { $("samplesBox").classList.add("hidden"); return; }
+  $("samples").innerHTML = list.map((x, i) => `
+    <button data-i="${i}" class="${i >= 8 ? "hidden extra " : ""}group text-left disabled:opacity-50" title="${esc(x.dish)}">
+      <img src="${esc(x.url)}" loading="lazy" class="w-full aspect-square object-cover rounded-lg border group-hover:ring-2 group-hover:ring-emerald-500" alt="${esc(x.dish)}" />
+      <span class="block text-[10.5px] leading-tight text-slate-600 mt-1 truncate">${esc(x.dish)}</span></button>`).join("");
+  $("moreSamples").classList.toggle("hidden", list.length <= 8);
+  $("moreSamples").onclick = () => { document.querySelectorAll("#samples .extra").forEach((b) => b.classList.remove("hidden")); $("moreSamples").classList.add("hidden"); };
+  $("samples").querySelectorAll("button").forEach((b) => (b.onclick = async () => {
+    const x = list[+b.dataset.i];
+    const blob = await (await fetch(x.url)).blob();
+    fromSample = x.dish;
+    analyseFile(new File([blob], x.url.split("/").pop(), { type: "image/jpeg" }));
+  }));
+}
 
 function showAnalysis(a) {
   if (!a.is_food) { $("photoErr").textContent = "That doesn't look like food. Try another photo."; $("photoErr").classList.remove("hidden"); return; }
@@ -142,7 +173,10 @@ function showAnalysis(a) {
     ${a.risk_factors.length ? `<p class="mt-1 text-xs"><b>Risk:</b> ${esc(a.risk_factors.join(", "))}</p>` : ""}
     ${a.visible_spoilage ? `<p class="mt-1 text-xs text-rose-700 font-semibold">⚠ Visible spoilage detected</p>` : ""}
     <p class="mt-1 text-xs text-slate-500">${esc(a.observations)} · <i>${esc(a.source)}</i></p>`;
-  $("servings").value = a.estimated_servings; $("diet").value = a.diet;
+  $("servings").value = fromSample ? Math.max(a.estimated_servings, SAMPLE_BATCH) : a.estimated_servings;
+  $("diet").value = a.diet;
+  $("sampleNote").classList.toggle("hidden", !fromSample);
+  if (fromSample) $("sampleNote").innerHTML = `<b>Sample dish (${esc(fromSample)}):</b> the photo shows one plate, so the batch size is set to ${$("servings").value} servings, as a kitchen would confirm. Change it if you like.`;
   $("stepConfirm").classList.remove("hidden");
 }
 

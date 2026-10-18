@@ -8,8 +8,9 @@ Hosted on Google Cloud Run: **[https://foodbridge-ai-builder-cup-524673786174.as
 
 | Page | Link | What it shows |
 |---|---|---|
+| Explore | [/explore](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/explore) | **Start here**: a 3-minute guided tour, how it works, what's real vs simulated |
 | Control room | [/control](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/control) | The demo screen: press **Play 10 PM rush** to watch real dish photos analysed by Gemini, matched and offered to NGOs live |
-| Donate | [/](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/) | Restaurant app: photo → Gemini analysis → confirm → live matching table |
+| Donate | [/](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/) | Restaurant app: photo (or one of 17 sample dishes) → Gemini analysis → confirm → live matching table |
 | NGO inbox | [/ngo](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/ngo) | NGO app: incoming offers with countdown, accept / decline, pickup and delivery |
 | Forecast | [/forecast](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/forecast) | Tonight's expected surplus by area and hour, NGO standby plan, Gemini dispatch briefing |
 | Impact | [/dashboard](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/dashboard) | Meals delivered, kg diverted, CO₂e avoided, share accepted within the safe window (from BigQuery) |

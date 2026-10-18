@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodBridge · Explore</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/static/common.js"></script>
+</head>
+<body class="bg-stone-50 text-slate-800">
+  <header id="topbar" class="bg-white border-b sticky top-0 z-[1000] h-[57px]"></header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-10">
+    <!-- hero -->
+    <section class="grid lg:grid-cols-[1.4fr_1fr] gap-6 items-center">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-emerald-700">Google AI Builder Cup · Bengaluru prototype</p>
+        <h1 class="text-3xl md:text-4xl font-bold mt-2 leading-tight">One photo of leftover food → a matched NGO pickup, before the food spoils.</h1>
+        <p class="mt-3 text-slate-600 max-w-2xl">Restaurants throw away edible food every night while orphanages, old-age homes and shelters nearby run short.
+          FoodBridge lets a busy kitchen list surplus with a single photo. Gemini works out what it is and how long it stays safe,
+          and the offer goes to the NGO that can collect and serve it in time.</p>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a href="/control" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg px-4 py-2.5">▶ Watch the live demo</a>
+          <a href="/" class="border bg-white hover:bg-slate-50 font-semibold rounded-lg px-4 py-2.5">Try a sample dish yourself</a>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border p-5">
+        <div class="text-xs font-semibold uppercase tracking-wide text-slate-500">Measured, not claimed</div>
+        <div id="evalTiles" class="grid grid-cols-2 gap-3 mt-3"></div>
+        <p id="evalNote" class="text-[11px] text-slate-400 mt-3"></p>
+      </div>
+    </section>
+
+    <!-- tour -->
+    <section>
+      <h2 class="text-xl font-bold">A 3-minute tour</h2>
+      <p class="text-sm text-slate-500 mt-1">Follow these in order. Each step opens the page and tells you what to look for.</p>
+      <ol class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="tour"></ol>
+    </section>
+
+    <!-- pipeline -->
+    <section>
+      <h2 class="text-xl font-bold">How it works</h2>
+      <p class="text-sm text-slate-500 mt-1">Every donation goes through the same six steps. The Google service doing the work is tagged on each.</p>
+      <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-6 gap-3" id="pipeline"></div>
+    </section>
+
+    <!-- real vs simulated + good to know -->
+    <section class="grid lg:grid-cols-2 gap-4">
+      <div class="bg-white rounded-xl border p-5">
+        <h2 class="font-bold">What's real and what's simulated</h2>
+        <table class="w-full text-sm mt-3">
+          <tbody class="[&_td]:py-1.5 [&_td]:align-top [&_tr]:border-t">
+            <tr><td class="pr-3 text-emerald-700 font-semibold whitespace-nowrap">Real</td><td>20 NGOs (OpenStreetMap care homes, NGO Darpan registry), 40 Bengaluru restaurants with closing times (Zomato), census wards, Routes API travel times, Gemini analysis of every photo, USDA/FSSAI safety rules, FAO CO₂e factor.</td></tr>
+            <tr><td class="pr-3 text-amber-700 font-semibold whitespace-nowrap">Simulated</td><td>Each NGO's capacity and daily meal gap, how much surplus each kitchen usually has, and the 45 nights of donation history behind the dashboard and forecast. Simulated fields are labelled <code class="text-xs">sim_</code> in the data.</td></tr>
+            <tr><td class="pr-3 text-sky-700 font-semibold whitespace-nowrap">Demo only</td><td>In the control-room rush, NGO replies are automatic, offers expire after 20 s instead of 10 min, and pickups are shown as a time-lapse. Rush pickups are kept out of the impact numbers.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="bg-white rounded-xl border p-5">
+        <h2 class="font-bold">Good to know</h2>
+        <ul class="mt-3 space-y-2 text-sm text-slate-600 list-disc pl-5">
+          <li><b>First load can take a few seconds.</b> The app scales to zero when idle to keep costs near zero, then wakes on the first visit.</li>
+          <li><b>Veg / non-veg uses two keys.</b> Gemini proposes and the kitchen confirms before food can go to a veg-only NGO. Gemini's own confidence didn't reliably flag its mistakes, so a human check stays in the loop.</li>
+          <li><b>Daily AI limit.</b> This personal prototype caps Gemini calls per day. If you see "daily limit reached", the rest of the app still works with existing donations.</li>
+          <li><b>Sample dishes</b> are photos of a single plate, so the batch size is pre-filled at 25 servings, as a kitchen would confirm.</li>
+          <li><b>Want to play the NGO?</b> In the control room, untick "NGOs auto-respond" and use Accept / Decline yourself.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- google services -->
+    <section>
+      <h2 class="text-xl font-bold">Built on Google Cloud</h2>
+      <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3" id="services"></div>
+    </section>
+  </main>
+
+<script>
+const TOUR = [
+  ["/control", "Control room", "Press ▶ Play 10 PM rush.", "Six restaurants list real dish photos. Watch Gemini's analysis, the NGOs filtered out because they can't arrive before the food spoils, and offers moving to the next NGO when one declines or doesn't answer."],
+  ["/", "Donate", "Pick a sample dish (or upload your own photo).", "Check what Gemini found: dish, veg/non-veg, risks, safe hours. Confirm, then read the matching table: why each NGO ranks where it does, its safety margin, and who was filtered out."],
+  ["/ngo", "NGO inbox", "Answer the offer you just created.", "Accept it, mark it picked up and delivered. If you don't answer within 10 minutes, it moves to the next NGO automatically."],
+  ["/dashboard", "Impact", "See what the system has achieved.", "Meals delivered, kg of food diverted, CO₂e avoided and the share accepted within the safe window, read from BigQuery."],
+  ["/forecast", "Forecast", "Look ahead to tonight.", "Expected surplus by area and hour, which NGOs should be on standby, and a dispatch briefing written by Gemini."],
+];
+const PIPE = [
+  ["📷", "Upload", "Kitchen photographs the surplus.", "Cloud Storage"],
+  ["✦", "Analyse", "Dish, veg/non-veg, risks, servings, safe hours.", "Gemini on Vertex AI"],
+  ["🛡", "Safety", "USDA / FSSAI holding rules; spoiled or late food is blocked.", "Cloud Run"],
+  ["🗺", "Match", "Drop NGOs that can't arrive in time; rank by need, fit, margin.", "Routes API"],
+  ["🔔", "Offer", "Top NGO first; no answer in 10 min, next NGO.", "Pub/Sub"],
+  ["📊", "Measure", "Every pickup logged; impact and forecast.", "BigQuery"],
+];
+const SERVICES = [
+  ["Gemini 3.6 Flash on Vertex AI", "Reads each food photo into structured JSON (dish, diet, risk, servings, safe hours) and writes the nightly dispatch briefing. No API key: the Cloud Run service identity is used."],
+  ["Cloud Run", "Hosts the app and API in Mumbai (asia-south1). Deploys automatically from GitHub through Cloud Build and Artifact Registry; scales to zero when idle."],
+  ["Routes API", "Real two-wheeler, traffic-aware travel times from every NGO to the restaurant decide who can arrive before the food spoils."],
+  ["Pub/Sub", "Every event (analysed, offered, accepted, delivered…) is published; a BigQuery subscription stores the full event log."],
+  ["BigQuery", "Completed pickups are streamed in and power the impact dashboard's headline numbers."],
+  ["Cloud Storage", "Keeps the food photos and snapshots of the app state, so nothing is lost when the service sleeps."],
+];
+
+const $ = (id) => document.getElementById(id);
+$("tour").innerHTML = TOUR.map(([href, page, action, look], i) => `
+  <li class="bg-white rounded-xl border p-4 flex flex-col">
+    <div class="flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold grid place-items-center">${i + 1}</span>
+      <span class="font-semibold">${page}</span></div>
+    <p class="mt-2 text-sm font-medium">${action}</p>
+    <p class="mt-1 text-sm text-slate-500 flex-1">${look}</p>
+    <a href="${href}" class="mt-3 self-start text-sm font-semibold text-emerald-700 hover:underline">Open ${page} →</a>
+  </li>`).join("");
+$("pipeline").innerHTML = PIPE.map(([icon, name, what, svc], i) => `
+  <div class="bg-white rounded-xl border p-4 relative">
+    <div class="text-xs text-slate-400 font-semibold">STEP ${i + 1}</div>
+    <div class="mt-1 font-semibold"><span class="mr-1">${icon}</span>${name}</div>
+    <p class="text-xs text-slate-500 mt-1 min-h-[3rem]">${what}</p>
+    <span class="inline-block mt-2 text-[10.5px] font-semibold px-2 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200">${svc}</span>
+  </div>`).join("");
+$("services").innerHTML = SERVICES.map(([name, what]) => `
+  <div class="bg-white rounded-xl border p-4"><div class="font-semibold">${name}</div><p class="text-sm text-slate-500 mt-1">${what}</p></div>`).join("");
+
+api("/api/eval").then((e) => {
+  const tiles = e ? [
+    [`${e.diet_accuracy_pct}%`, "veg / non-veg correct"], [`${e.veg_called_nonveg_pct}%`, "veg dishes called non-veg"],
+    [`${e.dish_accuracy_pct}%`, "exact dish identified"], [`${e.median_latency_s}s`, "median analysis time"],
+  ] : [];
+  $("evalTiles").innerHTML = tiles.map(([v, k]) => `<div class="rounded-lg bg-slate-50 border p-3"><div class="text-2xl font-bold tabular-nums">${v}</div><div class="text-xs text-slate-500">${k}</div></div>`).join("") || `<p class="text-sm text-slate-500">Evaluation results not available.</p>`;
+  if (e) $("evalNote").textContent = `Gemini tested on ${e.photos} photos of 80 Indian dishes (Indian Food Images dataset, Kaggle). Most dish misses are near-twins, e.g. butter chicken vs chicken tikka masala.`;
+}).catch(() => {});
+</script>
+</body>
+</html>

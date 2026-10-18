@@ -51,6 +51,8 @@ async def lifespan(_):
 
 app = FastAPI(title="FoodBridge", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
+SAMPLES = config.ROOT / "data/demo_photos"
+app.mount("/samples", StaticFiles(directory=SAMPLES), name="samples")
 config.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -108,6 +110,27 @@ def control_page():
 @app.get("/forecast")
 def forecast_page():
     return FileResponse(STATIC / "forecast.html")
+
+
+@app.get("/explore")
+def explore_page():
+    return FileResponse(STATIC / "explore.html")
+
+
+SAMPLE_NAMES = {"chicken_razala": "Chicken Rezala", "maach_jhol": "Macher Jhol (fish curry)",
+                "navrattan_korma": "Navratan Korma", "biryani": "Biryani"}
+
+
+@app.get("/api/samples")
+def list_samples():
+    """One sample photo per dish from data/demo_photos, so judges can try the flow without their own photo."""
+    out = []
+    for d in sorted(p for p in SAMPLES.iterdir() if p.is_dir()):
+        photos = sorted(d.glob("*.jpg"))
+        if photos:
+            out.append({"dish": SAMPLE_NAMES.get(d.name, d.name.replace("_", " ").title()),
+                        "url": f"/samples/{d.name}/{photos[0].name}"})
+    return out
 
 
 # ---------------- reference data ----------------
