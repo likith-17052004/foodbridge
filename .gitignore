@@ -1,14 +1,57 @@
-.venv/
-__pycache__/
-*.pyc
+# ---------- secrets and credentials ----------
 .env
-.DS_Store
-data/raw/food_images/
-data/raw/pincode/
-data/raw/zomato/
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+credentials*.json
+service-account*.json
+*-sa-key.json
+application_default_credentials.json
+.kaggle/
+
+# ---------- submission documents (kept local) ----------
+*.pdf
+*.pptx
+*.ppt
+*.docx
+*.doc
+*.xlsx
+
+# ---------- data ----------
+# raw downloads and scrapes: rebuildable from the sources listed in README
+data/raw/
+# pipeline intermediates (the app only needs ngos_*.csv and donors_demo.csv)
+data/processed/darpan_*.csv
+data/processed/donors_master.csv
+# runtime state
 data/uploads/
 data/cache/
-data/*.db
-Google_AI_builder_cup_challenge.pdf
-data/eval/run.log
-*.pptx
+*.db
+*.sqlite
+*.sqlite3
+*.snapshot
+# evaluation: keep the summary and report, not raw per-photo logs
+data/eval/*.jsonl
+data/eval/*.log
+
+# ---------- Python ----------
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# ---------- editors and OS ----------
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
+*.log
