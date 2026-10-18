@@ -11,3 +11,4 @@ data/cache/
 data/*.db
 Google_AI_builder_cup_challenge.pdf
 data/eval/run.log
+*.pptx
