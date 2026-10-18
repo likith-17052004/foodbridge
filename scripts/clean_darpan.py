@@ -16,6 +16,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data/processed/darpan_ngos_clean.csv"
+SHORTLIST = ROOT / "data/processed/darpan_shortlist.csv"  # tiers A + B, the input to geocode.py
 
 BENEFICIARY_SECTORS = {"Children", "Aged/Elderly", "Nutrition", "Differently Abled", "HIV/AIDS",
                        "Rural Development & Poverty Alleviation", "Housing"}
@@ -50,6 +51,7 @@ def main(path):
     d = d.sort_values(["relevance", "name"], key=lambda s: s.str.lower()).reset_index(drop=True)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     d.to_csv(OUT, index=False)
+    d[d["relevance"].isin(["A", "B"])].to_csv(SHORTLIST, index=False)
 
     print(f"{len(d)} NGOs -> {OUT}")
     print("relevance:", d["relevance"].value_counts().sort_index().to_dict())
