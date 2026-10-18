@@ -1,13 +1,10 @@
 """Photo -> structured food analysis with Gemini.
 
 Providers (VISION_PROVIDER, auto-detected when unset):
-  gemini      GEMINI_API_KEY (Google AI Studio)                 production option 1
-  vertex      GOOGLE_GENAI_USE_VERTEXAI=true (Gemini on Vertex) production option 2 (Cloud Run)
-  openrouter  OPENROUTER_API_KEY, same Gemini model via OpenRouter, for development and evaluation
-  demo        nothing configured: fixed, clearly-labelled sample result
-All providers use the same prompt and JSON schema, so results are comparable.
+  vertex  Gemini on Vertex AI (Cloud Run: the service account, no key; locally: gcloud ADC)
+  gemini  GEMINI_API_KEY (Google AI Studio)
+  demo    nothing configured: fixed, clearly-labelled sample result
 """
-import base64
 import json
 from typing import Literal
 
@@ -57,8 +54,10 @@ def _client():
     global _CLIENT
     if _CLIENT is None:
         from google import genai
-        _CLIENT = (genai.Client() if config.USE_VERTEX  # project/location from GOOGLE_CLOUD_PROJECT / _LOCATION
-                   else genai.Client(api_key=config.GEMINI_API_KEY))
+        if provider() == "vertex":
+            _CLIENT = genai.Client(vertexai=True, project=config.GCP_PROJECT or None, location=config.GCP_LOCATION)
+        else:
+            _CLIENT = genai.Client(api_key=config.GEMINI_API_KEY)
     return _CLIENT
 
 
@@ -69,8 +68,6 @@ def provider():
         return "vertex"
     if config.GEMINI_API_KEY:
         return "gemini"
-    if config.OPENROUTER_API_KEY:
-        return "openrouter"
     return "demo"
 
 
@@ -79,7 +76,7 @@ def gemini_enabled():
 
 
 def model_label():
-    return f"{provider()}:{config.OPENROUTER_MODEL if provider() == 'openrouter' else config.GEMINI_MODEL}"
+    return f"{provider()}:{config.GEMINI_MODEL}"
 
 
 def analyse(image_bytes: bytes, mime_type: str, donor_hint: str = "") -> dict:
@@ -87,8 +84,6 @@ def analyse(image_bytes: bytes, mime_type: str, donor_hint: str = "") -> dict:
     if p == "demo":
         return _demo_result(donor_hint)
     prompt = PROMPT + (f"\nContext: the donor is {donor_hint}." if donor_hint else "")
-    if p == "openrouter":
-        return _openrouter(image_bytes, mime_type, prompt)
     from google.genai import types
     resp = _client().models.generate_content(
         model=config.GEMINI_MODEL,
@@ -101,42 +96,6 @@ def analyse(image_bytes: bytes, mime_type: str, donor_hint: str = "") -> dict:
     return result
 
 
-def _strict(schema):
-    """OpenRouter/OpenAI strict JSON schema: inline $defs, no extra keys allowed."""
-    schema = json.loads(json.dumps(schema))
-    schema.pop("title", None)
-    schema["additionalProperties"] = False
-    for prop in schema.get("properties", {}).values():
-        prop.pop("title", None)
-    return schema
-
-
-def _openrouter(image_bytes, mime_type, prompt):
-    import httpx
-    data_url = f"data:{mime_type};base64,{base64.b64encode(image_bytes).decode()}"
-    body = {
-        "model": config.OPENROUTER_MODEL,
-        "temperature": 0.2,
-        "messages": [{"role": "user", "content": [
-            {"type": "text", "text": prompt},
-            {"type": "image_url", "image_url": {"url": data_url}},
-        ]}],
-        "response_format": {"type": "json_schema", "json_schema": {
-            "name": "food_analysis", "strict": True, "schema": _strict(FoodAnalysis.model_json_schema())}},
-        "provider": {"require_parameters": True},  # only route to backends that honour the schema
-    }
-    r = httpx.post("https://openrouter.ai/api/v1/chat/completions", json=body, timeout=90, headers={
-        "Authorization": f"Bearer {config.OPENROUTER_API_KEY}",
-        "HTTP-Referer": "https://github.com/foodbridge-aibc", "X-Title": "FoodBridge"})
-    if r.status_code != 200:
-        raise RuntimeError(f"OpenRouter {r.status_code}: {r.text[:300]}")
-    text = r.json()["choices"][0]["message"]["content"]
-    text = text.strip().removeprefix("```json").removesuffix("```").strip()
-    result = FoodAnalysis.model_validate_json(text).model_dump()
-    result["source"] = model_label()
-    return result
-
-
 def _demo_result(donor_hint):
     """Used only when no Gemini credentials are configured, so the rest of the flow can be exercised."""
     return FoodAnalysis(
@@ -144,7 +103,7 @@ def _demo_result(donor_hint):
         cuisine="South Indian", diet="veg", high_risk=True, risk_factors=["cooked rice", "curd (raita)"],
         estimated_servings=25, estimated_weight_kg=8.5,
         servings_reasoning="Demo mode: no vision provider configured, fixed sample values.",
-        safe_hours_room_temp=4.0, visible_spoilage=False, observations="Demo mode - set GEMINI_API_KEY.",
+        safe_hours_room_temp=4.0, visible_spoilage=False, observations="Demo mode - configure Vertex AI or GEMINI_API_KEY.",
         confidence=0.0,
     ).model_dump() | {"source": "demo (no Gemini key)"}
 
@@ -154,16 +113,6 @@ def generate_text(prompt: str, max_tokens: int = 2000) -> str:
     p = provider()
     if p == "demo":
         raise RuntimeError("No Gemini provider configured")
-    if p == "openrouter":
-        import httpx
-        r = httpx.post("https://openrouter.ai/api/v1/chat/completions", timeout=60, headers={
-            "Authorization": f"Bearer {config.OPENROUTER_API_KEY}", "X-Title": "FoodBridge"}, json={
-            "model": config.OPENROUTER_MODEL, "temperature": 0.3, "max_tokens": max_tokens,
-            "reasoning": {"effort": "low", "exclude": True},
-            "messages": [{"role": "user", "content": prompt}]})
-        if r.status_code != 200:
-            raise RuntimeError(f"OpenRouter {r.status_code}: {r.text[:300]}")
-        return r.json()["choices"][0]["message"]["content"].strip()
     from google.genai import types
     resp = _client().models.generate_content(model=config.GEMINI_MODEL, contents=prompt,
                                              config=types.GenerateContentConfig(temperature=0.3,

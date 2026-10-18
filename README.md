@@ -6,7 +6,7 @@ goes to the NGO best able to collect and serve it before it spoils.
 ## Run locally
 ```
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env          # add GEMINI_API_KEY
+cp .env.example .env          # Vertex AI: gcloud auth application-default login
 .venv/bin/python scripts/simulate_history.py --days 45 --reset   # dashboard history
 .venv/bin/uvicorn app.main:app --reload
 ```
@@ -59,7 +59,7 @@ Rebuild the data: `scripts/clean_darpan.py`, then `geocode.py`, then `build_ngos
 | Local | Cloud |
 |---|---|
 | `data/uploads/` | Cloud Storage |
-| `VISION_PROVIDER=openrouter` (development) or `gemini` | Gemini on Vertex AI (`VISION_PROVIDER=vertex`) |
+| Gemini on Vertex AI using your gcloud credentials | Gemini on Vertex AI using the Cloud Run service account |
 | `events` table plus a 3-second tick loop | Pub/Sub plus a scheduler |
 | SQLite `pickups` table | BigQuery |
 | Distance-based travel estimate | Routes API |

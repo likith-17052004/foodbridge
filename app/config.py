@@ -20,11 +20,10 @@ _load_dotenv()
 # --- Gemini ---
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
-USE_VERTEX = os.getenv("GOOGLE_GENAI_USE_VERTEXAI", "").lower() in ("1", "true")  # cloud later
-# same Gemini model via OpenRouter, for development/evaluation
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
-OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-3.6-flash")
-VISION_PROVIDER = os.getenv("VISION_PROVIDER", "").lower()  # gemini / vertex / openrouter / demo; blank = auto
+USE_VERTEX = os.getenv("GOOGLE_GENAI_USE_VERTEXAI", "").lower() in ("1", "true")
+VISION_PROVIDER = os.getenv("VISION_PROVIDER", "").lower()  # vertex / gemini / demo; blank = auto
+GCP_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT", "")
+GCP_LOCATION = os.getenv("GOOGLE_CLOUD_LOCATION", "global")  # gemini-3.6-flash is served from the global endpoint
 
 # --- data ---
 DATA_DIR = ROOT / "data"
