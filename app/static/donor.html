@@ -11,19 +11,7 @@
   <style>.leaflet-container{font:inherit}</style>
 </head>
 <body class="bg-stone-50 text-slate-800">
-  <header class="bg-white border-b sticky top-0 z-[1000]">
-    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
-      <a href="/" class="font-bold text-lg text-emerald-700">FoodBridge</a>
-      <nav class="flex gap-3 text-sm">
-        <a href="/" class="font-semibold text-slate-900">Donate</a>
-        <a href="/ngo" class="text-slate-500 hover:text-slate-900">NGO inbox</a>
-        <a href="/control" class="text-slate-500 hover:text-slate-900">Control room</a>
-        <a href="/forecast" class="text-slate-500 hover:text-slate-900">Forecast</a>
-        <a href="/dashboard" class="text-slate-500 hover:text-slate-900">Impact</a>
-      </nav>
-      <span id="mode" class="ml-auto text-xs px-2 py-1 rounded bg-slate-100"></span>
-    </div>
-  </header>
+  <header id="topbar" class="bg-white border-b sticky top-0 z-[1000] h-[57px]"></header>
 
   <main class="max-w-6xl mx-auto px-4 py-6 grid lg:grid-cols-[420px_1fr] gap-6">
     <section class="space-y-4">
@@ -95,8 +83,6 @@ const $ = (id) => document.getElementById(id);
 async function init() {
   const [cfg, d, n] = await Promise.all([api("/api/config"), api("/api/donors"), api("/api/ngos")]);
   donors = d; ngos = n;
-  $("mode").textContent = cfg.gemini ? `Gemini: ${cfg.model}` : "Demo mode (no Gemini key)";
-  $("mode").className += cfg.gemini ? " text-emerald-700" : " text-amber-700 bg-amber-50";
   $("donor").innerHTML = donors.map((x) => `<option value="${x.donor_id}">${esc(x.name)} · ${esc(x.locality)}</option>`).join("");
   $("donor").onchange = showDonor; showDonor(); drawNgos();
   const t = new Date(Date.now() - 60 * 60000); $("cookedAt").value = t.toTimeString().slice(0, 5);

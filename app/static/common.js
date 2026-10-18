@@ -57,3 +57,25 @@ function baseMap(el) {
 }
 const dot = (latlng, color, r = 7, opts = {}) =>
   L.circleMarker(latlng, { radius: r, color: "#fff", weight: 2, fillColor: color, fillOpacity: 0.95, ...opts });
+
+// One top bar for every page, so it never shifts when switching tabs
+const NAV = [["/", "Donate"], ["/ngo", "NGO inbox"], ["/control", "Control room"], ["/forecast", "Forecast"], ["/dashboard", "Impact"]];
+document.head.insertAdjacentHTML("beforeend", "<style>html{scrollbar-gutter:stable}</style>");
+function renderTopbar() {
+  const h = document.getElementById("topbar");
+  if (!h) return;
+  const here = location.pathname.replace(/\/$/, "") || "/";
+  h.className = "bg-white border-b sticky top-0 z-[1000]";
+  h.innerHTML = `<div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
+    <a href="/" class="font-bold text-lg text-emerald-700 shrink-0">FoodBridge</a>
+    <nav class="flex gap-1 text-sm overflow-x-auto">${NAV.map(([href, label]) => `<a href="${href}" class="px-2 py-1 rounded-md font-medium whitespace-nowrap ${href === here
+      ? "bg-emerald-50 text-emerald-800" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}"${href === here ? ' aria-current="page"' : ""}>${label}</a>`).join("")}</nav>
+    <span id="modelBadge" class="ml-auto hidden md:inline text-xs px-2 py-1 rounded bg-slate-100 text-slate-500 whitespace-nowrap">&nbsp;</span>
+  </div>`;
+  api("/api/config").then((cfg) => {
+    const b = document.getElementById("modelBadge");
+    b.textContent = cfg.gemini ? `Gemini: ${cfg.model}` : "Demo mode (no Gemini key)";
+    b.className = b.className.replace("text-slate-500", cfg.gemini ? "text-emerald-700" : "text-amber-700 bg-amber-50");
+  }).catch(() => {});
+}
+document.addEventListener("DOMContentLoaded", renderTopbar);
