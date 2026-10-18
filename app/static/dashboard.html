@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodBridge · Impact</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="/static/common.js"></script>
+  <style>.leaflet-container{font:inherit}</style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+  <header class="bg-white border-b sticky top-0 z-[1000]">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
+      <a href="/" class="font-bold text-lg text-emerald-700">FoodBridge</a>
+      <nav class="flex gap-3 text-sm">
+        <a href="/" class="text-slate-500 hover:text-slate-900">Donate</a>
+        <a href="/ngo" class="text-slate-500 hover:text-slate-900">NGO inbox</a>
+        <a href="/control" class="text-slate-500 hover:text-slate-900">Control room</a>
+        <a href="/forecast" class="text-slate-500 hover:text-slate-900">Forecast</a>
+        <a href="/dashboard" class="font-semibold text-slate-900">Impact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <div>
+      <h1 class="text-2xl font-bold">Impact · Bengaluru</h1>
+      <p class="text-sm text-slate-500">Live donations plus simulated history (real restaurants, NGOs and safety rules; simulated events).</p>
+    </div>
+
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="kpis"></section>
+
+    <section class="grid lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">Meals delivered per day</h2>
+        <div class="h-64 mt-2"><canvas id="daily" aria-label="Meals delivered per day" role="img"></canvas></div>
+      </div>
+      <div class="bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">What happened to every donation</h2>
+        <div id="funnel" class="mt-3 space-y-3 text-sm"></div>
+      </div>
+    </section>
+
+    <section class="grid lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">Where the food went</h2>
+        <p class="text-xs text-slate-500">Restaurant → NGO routes; thicker = more meals.</p>
+        <div id="map" class="h-96 mt-2 rounded-lg"></div>
+      </div>
+      <div class="bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">Meals by who was fed</h2>
+        <div id="cats" class="mt-3 space-y-3 text-sm"></div>
+        <h2 class="font-semibold mt-6">Latest pickups</h2>
+        <ul id="recent" class="mt-2 space-y-2 text-xs"></ul>
+      </div>
+    </section>
+  </main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const nf = (n) => Number(n).toLocaleString("en-IN");
+const map = baseMap("map"); addLegend(map);
+const routeLayer = L.layerGroup().addTo(map);
+let chart, ngos = [];
+
+const hbar = (label, value, max, color, note = "") => `
+  <div><div class="flex justify-between"><span>${esc(label)}</span><span class="font-semibold tabular-nums">${nf(value)}${note}</span></div>
+  <div class="h-2 bg-slate-100 rounded mt-1"><div class="h-2 rounded" style="width:${max ? (100 * value) / max : 0}%;background:${color}"></div></div></div>`;
+
+async function load() {
+  const [s, n] = await Promise.all([api("/api/impact"), ngos.length ? ngos : api("/api/ngos")]);
+  ngos = n;
+  const tiles = [
+    ["Meals delivered", nf(s.meals_delivered), `${s.pickups} pickups`],
+    ["Food diverted from waste", `${nf(Math.round(s.kg_diverted))} kg`, "0.35 kg per serving"],
+    ["CO₂e avoided", `${(s.co2e_avoided_kg / 1000).toFixed(1)} t`, "2.5 kg CO₂e per kg (FAO)"],
+    ["Accepted within safe window", `${s.accepted_within_window_pct ?? "—"}%`, `${s.avg_offers_per_pickup ?? "—"} offers per pickup`],
+  ];
+  $("kpis").innerHTML = tiles.map(([k, v, sub]) => `
+    <div class="bg-white rounded-xl border p-4"><div class="text-xs text-slate-500">${k}</div>
+    <div class="text-3xl font-bold mt-1 tabular-nums">${v}</div><div class="text-xs text-slate-400 mt-1">${sub}</div></div>`).join("");
+
+  const f = s.funnel, fmax = f.listed;
+  $("funnel").innerHTML =
+    hbar("Listed by restaurants", f.listed, fmax, "#94a3b8") +
+    hbar("Blocked: past safe window", f.blocked_unsafe, fmax, "#94a3b8") +
+    hbar("No NGO could reach in time", f.no_ngo_in_reach, fmax, "#94a3b8") +
+    hbar("Expired while being offered", f.expired_during_offers, fmax, "#94a3b8") +
+    (f.in_progress ? hbar("In progress now", f.in_progress, fmax, "#2a78d6") : "") +
+    hbar("Delivered", f.delivered, fmax, "#2a78d6", ` · ${Math.round((100 * f.delivered) / (fmax || 1))}%`);
+
+  const cmax = Math.max(...Object.values(s.by_category), 1);
+  $("cats").innerHTML = Object.entries(s.by_category).map(([c, v]) => hbar(c[0].toUpperCase() + c.slice(1), v, cmax, "#2a78d6")).join("");
+
+  $("recent").innerHTML = s.recent.map((r) => `
+    <li class="border-b pb-2"><b>${r.servings}</b> × ${esc(r.dish)}<br><span class="text-slate-500">${esc(r.donor)} → ${esc(r.ngo)} · ${new Date(r.delivered_at).toLocaleString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}${r.simulated ? "" : ' · <span class="text-emerald-700 font-semibold">live</span>'}</span></li>`).join("");
+
+  const labels = Object.keys(s.by_day), values = Object.values(s.by_day);
+  if (!chart) {
+    chart = new Chart($("daily"), {
+      type: "bar",
+      data: { labels, datasets: [{ label: "Meals", data: values, backgroundColor: "#2a78d6", borderRadius: { topLeft: 4, topRight: 4 }, borderSkipped: "bottom", maxBarThickness: 18 }] },
+      options: {
+        maintainAspectRatio: false, plugins: { legend: { display: false },
+          tooltip: { callbacks: { title: (i) => new Date(i[0].label).toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }), label: (i) => ` ${nf(i.raw)} meals` } } },
+        scales: { x: { grid: { display: false }, ticks: { color: "#64748b", maxTicksLimit: 8, callback: (v, i) => new Date(labels[i]).toLocaleDateString([], { month: "short", day: "numeric" }) } },
+                  y: { beginAtZero: true, grid: { color: "#f1f5f9" }, border: { display: false }, ticks: { color: "#64748b" } } },
+      },
+    });
+  } else { chart.data.labels = labels; chart.data.datasets[0].data = values; chart.update("none"); }
+
+  routeLayer.clearLayers();
+  const mmax = Math.max(...s.routes.map((r) => r.meals), 1);
+  s.routes.forEach((r) => L.polyline([r.donor, r.ngo], { color: "#475569", weight: 1 + (5 * r.meals) / mmax, opacity: 0.35 })
+    .bindTooltip(`${esc(r.donor_name)} → ${esc(r.ngo_name)}<br><b>${nf(r.meals)}</b> meals`, { sticky: true }).addTo(routeLayer));
+  ngos.forEach((n) => dot([n.lat, n.lon], CAT_COLOR[n.category], 7).bindTooltip(`<b>${esc(n.name)}</b><br>${n.category}`).addTo(routeLayer));
+}
+load(); setInterval(load, 10000);
+</script>
+</body>
+</html>

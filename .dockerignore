@@ -1,0 +1,9 @@
+.venv
+.env
+.git
+data/raw
+data/cache
+data/uploads
+data/*.db
+**/__pycache__
+*.pdf

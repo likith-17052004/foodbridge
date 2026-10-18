@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodBridge Control Room</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/common.js"></script>
+  <style>
+    :root { --bg:#0a0f1c; --panel:#111827; --panel2:#0d1422; --line:#1f2a40; --ink:#e5eaf3; --muted:#8a96ad; }
+    html, body { height:100%; }
+    body { background:var(--bg); color:var(--ink); }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:12px; }
+    .sub { background:var(--panel2); border:1px solid var(--line); border-radius:10px; }
+    .muted { color:var(--muted); }
+    .label { font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+    .leaflet-container { background:#0a0f1c; font:inherit; }
+    .dark-tiles { filter: invert(1) hue-rotate(180deg) grayscale(.6) brightness(.9) contrast(.85); }
+    .leaflet-tooltip { background:#111827; color:#e5eaf3; border:1px solid #1f2a40; box-shadow:none; }
+    .leaflet-tooltip:before { display:none; }
+    .rank-tip { background:transparent !important; border:0 !important; color:#fff !important; font-weight:700; font-size:11px; padding:0 !important; text-shadow:0 0 3px #000; }
+    .pulse { animation:pulse 1.6s ease-out infinite; }
+    @keyframes pulse { 0% { box-shadow:0 0 0 0 rgba(245,158,11,.6);} 100% { box-shadow:0 0 0 12px rgba(245,158,11,0);} }
+    .ev-new { animation:flash 1.2s ease-out; }
+    @keyframes flash { from { background:#1b2742; } to { background:transparent; } }
+    ::-webkit-scrollbar { width:6px; height:6px } ::-webkit-scrollbar-thumb { background:#1f2a40; border-radius:3px }
+    .step { display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0; }
+    .step .dot { width:22px; height:22px; border-radius:999px; display:grid; place-items:center; font-size:11px; font-weight:700; }
+    .step .name { font-size:10px; color:var(--muted); white-space:nowrap; }
+    .step.done .dot { background:#16a34a; color:#fff; } .step.now .dot { background:#f59e0b; color:#000; } .step.todo .dot { background:#1f2a40; color:#8a96ad; } .step.fail .dot { background:#dc2626; color:#fff; }
+    .step.now .name, .step.done .name { color:var(--ink); }
+    .bar-line { height:2px; flex:1; margin-top:11px; background:#1f2a40; } .bar-line.done { background:#16a34a; }
+  </style>
+</head>
+<body class="flex flex-col overflow-hidden">
+  <!-- header -->
+  <header class="shrink-0 px-4 h-12 flex items-center gap-4 border-b whitespace-nowrap" style="border-color:var(--line)">
+    <div class="font-bold"><span class="text-emerald-400">FoodBridge</span> <span class="muted font-normal">Control Room</span></div>
+    <span class="text-xs muted">Bengaluru · <span id="clock" class="font-mono"></span> IST</span>
+    <span id="provider" class="hidden xl:inline text-[11px] px-2 py-0.5 rounded border muted" style="border-color:var(--line)"></span>
+    <nav class="hidden xl:flex gap-3 text-xs muted"><a href="/" class="hover:text-white">Donate</a><a href="/ngo" class="hover:text-white">NGO</a><a href="/forecast" class="hover:text-white">Forecast</a><a href="/dashboard" class="hover:text-white">Impact</a></nav>
+    <div class="ml-auto flex items-center gap-2">
+      <label class="flex items-center gap-2 text-xs muted mr-2"><input id="autoNgo" type="checkbox" checked class="accent-emerald-500" /> NGOs auto-respond</label>
+      <button id="playBtn" class="bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-md px-3 py-1.5 text-sm">▶ Play 10 PM rush</button>
+      <button id="stopBtn" class="border rounded-md px-3 py-1.5 text-sm muted hover:text-white" style="border-color:var(--line)">■ Stop</button>
+      <button id="resetBtn" class="border rounded-md px-3 py-1.5 text-sm muted hover:text-white" style="border-color:var(--line)" title="Remove demo-scenario donations">↺ Reset</button>
+    </div>
+  </header>
+
+  <!-- KPI strip -->
+  <section id="kpis" class="shrink-0 px-4 pt-3 grid grid-cols-7 gap-3"></section>
+
+  <!-- main -->
+  <main class="flex-1 min-h-0 p-4 pt-3 grid gap-3" style="grid-template-columns: 270px minmax(0,1fr) 390px;">
+    <!-- left: queue -->
+    <section class="panel flex flex-col min-h-0 min-w-0">
+      <div class="px-3 pt-3 pb-2 flex items-center justify-between"><span class="label">Live donations</span><span id="qCount" class="text-[11px] muted"></span></div>
+      <div id="queue" class="flex-1 min-h-0 overflow-y-auto px-2 pb-2 space-y-1.5"></div>
+    </section>
+
+    <!-- center: map + events -->
+    <section class="min-h-0 min-w-0 grid gap-3" style="grid-template-rows: minmax(0,1fr) 190px; grid-template-columns: minmax(0,1fr);">
+      <div class="panel relative overflow-hidden min-h-0">
+        <div id="map" class="absolute inset-0"></div>
+        <div class="absolute top-2 left-2 z-[500] sub px-3 py-2 text-[11px] space-y-1" id="legend"></div>
+        <div class="absolute top-2 right-2 z-[500] sub px-2 py-1 text-[11px] muted">Pickups shown as time-lapse</div>
+      </div>
+      <div class="panel flex flex-col min-h-0 min-w-0">
+        <div class="px-3 pt-2.5 pb-1.5 flex items-center justify-between"><span class="label">Event stream · Pub/Sub topics</span><span id="evCount" class="text-[11px] muted"></span></div>
+        <div id="events" class="flex-1 min-h-0 overflow-y-auto px-3 pb-2 font-mono text-[11.5px] leading-5"></div>
+      </div>
+    </section>
+
+    <!-- right: focused donation -->
+    <section class="panel flex flex-col min-h-0 min-w-0">
+      <div class="px-4 pt-3 pb-2 flex items-center justify-between"><span class="label">Focused donation</span><span id="fStatus"></span></div>
+      <div id="detail" class="flex-1 min-h-0 overflow-y-auto px-4 pb-4 space-y-3 text-sm"></div>
+    </section>
+  </main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const C = { children: "#3987e5", elderly: "#d95926", other: "#199e70" }; // dark-mode steps of the validated palette
+const colorOf = (cat) => C[groupOf(cat)];
+const nf = (n) => Number(n || 0).toLocaleString("en-IN");
+let NG = {}, DN = {}, live = null, focusId = null, pinned = false, lastEv = 0, evSeen = 0, serverSkew = 0;
+
+const now = () => Date.now() + serverSkew;
+const secsLeft = (iso) => Math.max(0, Math.round((new Date(iso) - now()) / 1000));
+const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+const minsLeft = (iso) => Math.round((new Date(iso) - now()) / 60000);
+
+const PILL = { offered: "#f59e0b", pending: "#f59e0b", accepted: "#22c55e", picked_up: "#38bdf8", delivered: "#16a34a", expired: "#ef4444", unmatched: "#ef4444", declined: "#64748b", cancelled: "#64748b" };
+const pill = (s) => { const c = PILL[s] || "#64748b"; return `<span class="text-[10.5px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap" style="background:${c}22;color:${c};border:1px solid ${c}55">${s.replace("_", " ")}</span>`; };
+const dietTag = (d) => ({ veg: ["VEG", "#22c55e"], egg: ["EGG", "#eab308"], non_veg: ["NON-VEG", "#ef4444"] }[d] || ["?", "#64748b"]);
+const diet = (d) => { const [t, c] = dietTag(d); return `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded border whitespace-nowrap" style="color:${c};border-color:${c}">${t}</span>`; };
+
+// ---------- map ----------
+const map = L.map("map", { zoomControl: false }).setView([12.95, 77.6], 11);
+L.control.zoom({ position: "bottomright" }).addTo(map);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap", maxZoom: 19, className: "dark-tiles" }).addTo(map);
+const ngoLayer = L.layerGroup().addTo(map), flowLayer = L.layerGroup().addTo(map), donorLayer = L.layerGroup().addTo(map);
+$("legend").innerHTML = [["Children", C.children], ["Elderly", C.elderly], ["Other care homes", C.other]].map(([l, c]) => `<div class="flex items-center gap-2"><span style="background:${c}" class="inline-block w-2.5 h-2.5 rounded-full"></span>${l}</div>`).join("")
+  + `<div class="flex items-center gap-2"><span class="inline-block w-2.5 h-2.5 rotate-45" style="background:#f59e0b"></span>Restaurant (active)</div>`
+  + `<div class="flex items-center gap-2"><span class="inline-block w-4 border-t-2 border-dashed" style="border-color:#f59e0b"></span>Offer pending</div>`
+  + `<div class="flex items-center gap-2"><span class="inline-block w-4 border-t-2" style="border-color:#22c55e"></span>Accepted / pickup</div>`;
+
+async function init() {
+  const [cfg, ngos, donors] = await Promise.all([api("/api/config"), api("/api/ngos"), api("/api/donors")]);
+  ngos.forEach((n) => (NG[n.ngo_id] = n)); donors.forEach((d) => (DN[d.donor_id] = d));
+  map.fitBounds(L.latLngBounds(ngos.map((n) => [n.lat, n.lon])).pad(0.1));
+  $("provider").textContent = cfg.gemini ? `Gemini · ${cfg.model.split(":").pop()}` : "Demo mode (no Gemini)";
+  window.EVAL = await api("/api/eval").catch(() => null);
+  tick(); setInterval(tick, 1500); setInterval(clock, 500);
+}
+
+function clock() {
+  $("clock").textContent = new Date(now()).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false });
+  document.querySelectorAll("[data-exp]").forEach((el) => (el.textContent = mmss(secsLeft(el.dataset.exp))));
+  document.querySelectorAll("[data-safe]").forEach((el) => (el.textContent = `${minsLeft(el.dataset.safe)} min`));
+  moveVolunteers();
+}
+
+async function tick() {
+  try {
+    const [l, ev] = await Promise.all([api("/api/live"), api(`/api/events?after=${lastEv}`)]);
+    serverSkew = new Date(l.server_time) - Date.now();
+    live = l;
+    const top = l.donations[0]?.id;
+    if (!focusId || !l.donations.find((d) => d.id === focusId) || (!pinned && l.scenario.running && top !== window._lastTop)) focusId = top || null;
+    window._lastTop = top;
+    renderKpis(); renderQueue(); renderDetail(); renderMap(); renderEvents(ev); renderControls();
+  } catch (e) { console.error(e); }
+}
+
+function renderControls() {
+  const s = live.scenario;
+  $("playBtn").disabled = s.running;
+  $("playBtn").textContent = s.running ? `● Running ${s.created}/${s.planned}` : "▶ Play 10 PM rush";
+  $("playBtn").classList.toggle("opacity-70", s.running);
+  $("autoNgo").checked = s.auto_ngo;
+}
+
+function renderKpis() {
+  const t = live.tonight, e = window.EVAL;
+  const tiles = [
+    ["Meals rescued", nf(t.meals), "last 3 hours"], ["Food diverted", `${nf(t.kg)} kg`, "0.35 kg / meal"],
+    ["CO₂e avoided", `${nf(t.co2e_kg)} kg`, "FAO factor 2.5"], ["Donations", nf(t.donations), `${t.blocked_or_expired} blocked / expired`],
+    ["Active now", nf(t.active), "offered or en route"], ["Median time to match", t.median_match_seconds != null ? `${t.median_match_seconds}s` : "—", "listing → accepted"],
+    ["Gemini veg / non-veg", e ? `${e.diet_accuracy_pct}%` : "—", e ? `dish ID ${e.dish_accuracy_pct}% · ${e.photos} photos` : "run eval_vision.py"],
+  ];
+  $("kpis").innerHTML = tiles.map(([k, v, s]) => `<div class="panel px-3 py-2"><div class="label">${k}</div><div class="text-xl font-bold tabular-nums leading-7">${v}</div><div class="text-[10px] muted truncate">${s}</div></div>`).join("");
+}
+
+// ---------- left: queue ----------
+function renderQueue() {
+  const ds = live.donations;
+  $("qCount").textContent = ds.length ? `${ds.length}` : "";
+  $("queue").innerHTML = ds.map((d) => {
+    const p = d.offers.find((o) => o.status === "pending");
+    return `<button onclick="focusId='${d.id}';pinned=true;tick()" class="w-full text-left flex gap-2.5 p-2 rounded-lg border ${d.id === focusId ? "bg-[#16213a]" : "hover:bg-[#141d31]"}" style="border-color:${d.id === focusId ? "#34d399" : "var(--line)"}">
+      <img src="${esc(d.photo_path)}" class="w-12 h-12 rounded-md object-cover shrink-0" alt="" />
+      <div class="min-w-0 flex-1">
+        <div class="flex items-center justify-between gap-1"><span class="text-[13px] font-semibold truncate">${esc(d.analysis?.dish_name)}</span></div>
+        <div class="text-[11px] muted truncate">${esc(d.donor?.name)} · ${d.servings ?? "?"} meals</div>
+        <div class="mt-1 flex items-center gap-1.5">${pill(d.status)}${p ? `<span class="font-mono text-[10.5px] text-amber-400" data-exp="${p.expires_at}">${mmss(secsLeft(p.expires_at))}</span>` : ""}</div>
+      </div></button>`;
+  }).join("") || `<div class="muted text-sm p-3">No donations yet.<br><br>Press <b class="text-white">▶ Play 10 PM rush</b>, or donate from the Donate page.</div>`;
+}
+const focused = () => live.donations.find((d) => d.id === focusId);
+
+// ---------- right: focused donation ----------
+function stepper(d) {
+  const order = ["Photo", "Gemini", "Safety", "Matched", "Offered", "Picked up", "Delivered"];
+  // index of the step in progress (all before it are done), or the step that failed
+  let cur, fail = false;
+  if (d.safety?.blocked) [cur, fail] = [2, true];
+  else if (d.status === "unmatched") [cur, fail] = [3, true];
+  else if (d.status === "expired") [cur, fail] = [4, true];
+  else cur = { offered: 4, accepted: 5, picked_up: 6, delivered: 7 }[d.status] ?? 4;
+  return `<div class="flex items-start">${order.map((n, i) => {
+    const cls = i < cur ? "done" : i === cur ? (fail ? "fail" : "now") : "todo";
+    return `${i ? `<div class="bar-line ${i <= cur && !(fail && i === cur) ? "done" : ""}"></div>` : ""}<div class="step ${cls}" style="flex:0 0 auto"><div class="dot">${cls === "done" ? "✓" : cls === "fail" ? "✕" : i + 1}</div><div class="name">${n}</div></div>`;
+  }).join("")}</div>`;
+}
+
+function renderDetail() {
+  const d = focused();
+  if (!d) { $("detail").innerHTML = `<div class="muted mt-16 text-center">Waiting for a donation…</div>`; $("fStatus").innerHTML = ""; return; }
+  $("fStatus").innerHTML = pill(d.status);
+  const a = d.analysis || {}, s = d.safety || {};
+  const left = minsLeft(d.safe_until), total = s.hours_total ? s.hours_total * 60 : 1;
+  const pct = Math.max(0, Math.min(100, (100 * left) / total));
+  const pend = d.offers.find((o) => o.status === "pending"), acc = d.offers.find((o) => o.status === "accepted");
+  const cur = pend || acc, n = cur && NG[cur.ngo_id], m = cur && (d.matches.eligible.find((e) => e.ngo_id === cur.ngo_id) || {});
+  const manual = !live.scenario.auto_ngo || d.simulated === 0;
+
+  $("detail").innerHTML = `
+    <div class="flex gap-3">
+      <img src="${esc(d.photo_path)}" class="w-20 h-20 rounded-lg object-cover shrink-0" alt="" />
+      <div class="min-w-0"><div class="font-semibold leading-snug">${esc(a.dish_name)}</div>
+        <div class="text-xs muted mt-0.5">${esc(d.donor?.name)} · ${esc(d.donor?.locality)}</div>
+        <div class="mt-1.5 flex items-center gap-1.5">${diet(d.diet)}<span class="text-xs">${d.servings} meals</span></div></div>
+    </div>
+
+    <div class="sub px-2 py-2.5">${stepper(d)}</div>
+
+    <div class="sub p-3">
+      <div class="label mb-1.5 text-emerald-400" style="color:#34d399">✦ Gemini analysis</div>
+      <div class="text-xs muted">${esc((a.items || []).join(", "))}</div>
+      <div class="grid grid-cols-3 gap-2 mt-2 text-center">
+        <div class="rounded-md py-1.5" style="background:#0a0f1c"><div class="font-bold tabular-nums">${a.estimated_servings ?? "—"}</div><div class="text-[10px] muted">servings seen</div></div>
+        <div class="rounded-md py-1.5" style="background:#0a0f1c"><div class="font-bold tabular-nums">${a.safe_hours_room_temp ?? "—"} h</div><div class="text-[10px] muted">safe, room temp</div></div>
+        <div class="rounded-md py-1.5" style="background:#0a0f1c"><div class="font-bold tabular-nums">${a.confidence != null ? Math.round(a.confidence * 100) + "%" : "—"}</div><div class="text-[10px] muted">confidence</div></div>
+      </div>
+      ${a.risk_factors?.length ? `<div class="text-xs mt-2"><span class="text-amber-400">Risk:</span> ${esc(a.risk_factors.join(", "))}</div>` : ""}
+    </div>
+
+    ${s.blocked ? `<div class="sub p-3 text-red-300" style="border-color:#7f1d1d"><div class="label mb-1" style="color:#f87171">Food safety</div><b>Blocked:</b> ${esc(s.blocked_reason)}</div>` : `
+    <div class="sub p-3">
+      <div class="flex justify-between items-baseline"><span class="label">Safety window</span><span class="font-semibold tabular-nums ${left < 60 ? "text-red-400" : "text-emerald-400"}" data-safe="${d.safe_until}">${left} min</span></div>
+      <div class="h-1.5 rounded mt-2" style="background:#1f2a40"><div class="h-1.5 rounded" style="width:${pct}%;background:${left < 60 ? "#ef4444" : "#22c55e"}"></div></div>
+      <div class="flex justify-between text-[11px] muted mt-1.5"><span>${esc(s.rule || "")}</span><span>until ${fmtTime(d.safe_until)}</span></div>
+    </div>`}
+
+    <div class="sub p-3">
+      <div class="flex justify-between items-baseline mb-2"><span class="label">Offer cascade</span><span class="text-[11px] muted">${d.matches.eligible_count} in reach · ${d.matches.excluded.length} filtered</span></div>
+      <ol class="space-y-1">${d.offers.map((o) => `<li class="flex items-center justify-between gap-2 text-xs py-1 border-b last:border-0" style="border-color:var(--line)">
+        <span class="truncate"><span class="muted tabular-nums">#${o.rank}</span> ${esc(o.ngo_name)}</span>
+        <span class="flex items-center gap-1.5 shrink-0">${o.status === "pending" ? `<span class="font-mono text-[11px] text-amber-400" data-exp="${o.expires_at}">${mmss(secsLeft(o.expires_at))}</span>` : ""}${pill(o.status)}</span></li>`).join("") || `<li class="text-xs muted">No offers.</li>`}</ol>
+    </div>
+
+    ${cur && n ? `
+    <div class="rounded-lg p-3 ${pend ? "pulse" : ""}" style="background:${pend ? "#1c1606" : "#0d1d16"};border:1px solid ${pend ? "#f59e0b" : "#166534"}">
+      <div class="flex justify-between items-baseline"><span class="label" style="color:${pend ? "#fbbf24" : "#4ade80"}">${pend ? "NGO app · offer waiting" : "NGO app · accepted"}</span>
+        ${pend ? `<span class="font-mono text-xs text-amber-300" data-exp="${pend.expires_at}">${mmss(secsLeft(pend.expires_at))}</span>` : ""}</div>
+      <div class="font-semibold mt-1">${esc(n.name)}</div>
+      <div class="text-[11px] muted">${esc(n.category)} · ${esc(n.ward_name || "")} · needs ~${n.sim_daily_meal_gap} meals today</div>
+      <div class="grid grid-cols-3 gap-2 mt-2 text-center text-xs">
+        <div class="rounded-md py-1.5" style="background:#0a0f1c"><div class="font-semibold">${m.km ?? "?"} km</div><div class="text-[10px] muted">distance</div></div>
+        <div class="rounded-md py-1.5" style="background:#0a0f1c"><div class="font-semibold">${m.travel_min ?? "?"} min</div><div class="text-[10px] muted">each way</div></div>
+        <div class="rounded-md py-1.5" style="background:#0a0f1c"><div class="font-semibold">${m.margin_min ?? "?"} min</div><div class="text-[10px] muted">safety margin</div></div>
+      </div>
+      ${pend ? `<div class="grid grid-cols-2 gap-2 mt-3">
+        <button onclick="respond('${pend.id}','decline')" class="border rounded-md py-1.5 text-sm hover:bg-white/5" style="border-color:var(--line)">Decline</button>
+        <button onclick="respond('${pend.id}','accept')" class="bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-md py-1.5 text-sm">Accept</button></div>
+        <div class="text-[10px] muted text-center mt-1.5">${manual ? "You are answering as this NGO" : "Auto-respond is on · you can still tap"}</div>` : ""}
+    </div>` : ""}`;
+}
+async function respond(id, action) { try { await postJSON(`/api/offers/${id}/${action}`); } catch (e) { alert(e.message); } tick(); }
+
+// ---------- map ----------
+let volunteers = [];
+const volStart = {};
+function renderMap() {
+  ngoLayer.clearLayers(); flowLayer.clearLayers(); donorLayer.clearLayers(); volunteers = [];
+  const f = focused(), excl = {}, rank = {};
+  (f?.matches.excluded || []).forEach((x) => (excl[x.ngo_id] = x.reason));
+  (f?.matches.eligible || []).forEach((x) => (rank[x.ngo_id] = x.rank));
+  Object.values(NG).forEach((n) => {
+    const out = f && excl[n.ngo_id], top = rank[n.ngo_id] && rank[n.ngo_id] <= 3;
+    L.circleMarker([n.lat, n.lon], { radius: top ? 8 : 6, color: out ? "#475569" : "#e5eaf3", weight: top ? 2 : 1, fillColor: out ? "#334155" : colorOf(n.category), fillOpacity: out ? 0.5 : 0.95 })
+      .bindTooltip(`<b>${esc(n.name)}</b><br>${n.category} · needs ~${n.sim_daily_meal_gap} meals${rank[n.ngo_id] ? `<br>#${rank[n.ngo_id]} for focused donation` : ""}${out ? `<br>✕ ${esc(out)}` : ""}`).addTo(ngoLayer);
+    if (top) L.tooltip({ permanent: true, direction: "right", offset: [6, 0], className: "rank-tip" }).setLatLng([n.lat, n.lon]).setContent(`#${rank[n.ngo_id]}`).addTo(ngoLayer);
+  });
+  live.donations.forEach((d) => {
+    const dn = [d.donor.lat, d.donor.lon], active = ["offered", "accepted", "picked_up"].includes(d.status), isF = d.id === focusId;
+    const col = active ? "#f59e0b" : d.status === "delivered" ? "#16a34a" : "#64748b", sz = isF ? 16 : 11;
+    L.marker(dn, { icon: L.divIcon({ className: "", html: `<div class="${active ? "pulse" : ""}" style="width:${sz}px;height:${sz}px;background:${col};border:2px solid ${isF ? "#fff" : "#0a0f1c"};transform:rotate(45deg)"></div>`, iconSize: [sz, sz], iconAnchor: [sz / 2, sz / 2] }) })
+      .bindTooltip(`<b>${esc(d.donor.name)}</b><br>${esc(d.analysis?.dish_name)} · ${d.servings} meals<br>${d.status}`).on("click", () => { focusId = d.id; pinned = true; tick(); }).addTo(donorLayer);
+    d.offers.forEach((o) => {
+      const n = NG[o.ngo_id]; if (!n) return;
+      const to = [n.lat, n.lon];
+      if (o.status === "pending") L.polyline([dn, to], { color: "#f59e0b", weight: isF ? 3 : 1.5, dashArray: "6 7", opacity: isF ? 1 : 0.6 }).addTo(flowLayer);
+      if (o.status === "accepted") {
+        const done = d.status === "delivered";
+        L.polyline([dn, to], { color: "#22c55e", weight: done ? 1.5 : isF ? 3 : 2, opacity: done ? 0.3 : 0.9 }).addTo(flowLayer);
+        if (d.status === "picked_up") volunteers.push({ key: d.id, from: dn, to, m: L.circleMarker(dn, { radius: 5, color: "#fff", weight: 2, fillColor: "#38bdf8", fillOpacity: 1 }).bindTooltip("Volunteer en route").addTo(flowLayer) });
+      }
+    });
+  });
+  moveVolunteers();
+}
+function moveVolunteers() {
+  volunteers.forEach((v) => {
+    volStart[v.key] = volStart[v.key] || Date.now();
+    const p = Math.min(1, (Date.now() - volStart[v.key]) / 9000);
+    v.m.setLatLng([v.from[0] + (v.to[0] - v.from[0]) * p, v.from[1] + (v.to[1] - v.from[1]) * p]);
+  });
+}
+
+// ---------- events ----------
+const TOPIC = { gemini: "#34d399", matching: "#a78bfa", safety: "#f87171", offers: "#fbbf24", pickups: "#38bdf8" };
+function evText(e) {
+  const p = e.payload, ngo = NG[p.ngo_id]?.name, don = live?.donations.find((d) => d.id === p.donation_id);
+  const dish = don?.analysis?.dish_name || p.dish || p.donation_id;
+  return ({
+    "donation.analysed": ["gemini", `${esc(p.dish)} <span class="muted">(${p.diet})</span> · ${esc(DN[p.donor_id]?.name || "")}`],
+    "donation.matched": ["matching", `${esc(dish)}: <b>${p.eligible}</b> NGOs in reach, ${p.excluded} filtered`],
+    "donation.blocked": ["safety", `${esc(dish)} blocked: ${esc(p.reason)}`],
+    "offer.created": ["offers", `#${p.rank} ${esc(ngo)} ← ${esc(dish)}`],
+    "offer.accepted": ["offers", `<span class="text-emerald-400 font-semibold">${esc(ngo)} accepted</span> ${esc(dish)}`],
+    "offer.declined": ["offers", `<span class="muted">${esc(ngo)} declined → next NGO</span>`],
+    "offer.expired": ["offers", `<span class="muted">${esc(ngo)} no answer → next NGO</span>`],
+    "donation.picked_up": ["pickups", `${esc(dish)} picked up`],
+    "donation.delivered": ["pickups", `<span class="text-emerald-400">${esc(dish)} delivered to ${esc(ngo)} · ${p.servings} meals</span>`],
+    "donation.expired": ["safety", `${esc(dish)} expired: ${esc(p.reason)}`],
+    "donation.unmatched": ["matching", `${esc(dish)}: no NGO can reach it in time`],
+  }[e.topic] || [e.topic.split(".")[0], esc(JSON.stringify(p))]);
+}
+function renderEvents(evs) {
+  if (!evs.length) return;
+  const first = lastEv === 0;
+  lastEv = evs.at(-1).id; evSeen += evs.length;
+  $("events").insertAdjacentHTML("beforeend", evs.map((e) => {
+    const [topic, txt] = evText(e);
+    return `<div class="${first ? "" : "ev-new"} flex gap-2 rounded px-1 min-w-0"><span class="muted shrink-0">${new Date(e.ts).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata", hour12: false })}</span><span class="shrink-0 w-[72px]" style="color:${TOPIC[topic] || "#94a3b8"}">${topic}</span><span class="truncate min-w-0">${txt}</span></div>`;
+  }).join(""));
+  while ($("events").children.length > 200) $("events").firstChild.remove();
+  $("events").scrollTop = $("events").scrollHeight;
+  $("evCount").textContent = `${evSeen} events`;
+}
+
+// ---------- controls ----------
+$("playBtn").onclick = async () => {
+  pinned = false;
+  try { await postJSON("/api/scenario/start", { donations: 6, interval_s: 8, offer_timeout_s: 20, auto_ngo: $("autoNgo").checked }); } catch (e) { alert(e.message); }
+  tick();
+};
+$("stopBtn").onclick = async () => { await postJSON("/api/scenario/stop"); tick(); };
+$("resetBtn").onclick = async () => { if (confirm("Remove all demo-scenario donations?")) { await postJSON("/api/scenario/reset"); focusId = null; pinned = false; tick(); } };
+$("autoNgo").onchange = async (e) => { await postJSON(`/api/scenario/auto_ngo?on=${e.target.checked}`); tick(); };
+init();
+</script>
+</body>
+</html>

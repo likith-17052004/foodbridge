@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodBridge · Donate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/common.js"></script>
+  <style>.leaflet-container{font:inherit}</style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+  <header class="bg-white border-b sticky top-0 z-[1000]">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
+      <a href="/" class="font-bold text-lg text-emerald-700">FoodBridge</a>
+      <nav class="flex gap-3 text-sm">
+        <a href="/" class="font-semibold text-slate-900">Donate</a>
+        <a href="/ngo" class="text-slate-500 hover:text-slate-900">NGO inbox</a>
+        <a href="/control" class="text-slate-500 hover:text-slate-900">Control room</a>
+        <a href="/forecast" class="text-slate-500 hover:text-slate-900">Forecast</a>
+        <a href="/dashboard" class="text-slate-500 hover:text-slate-900">Impact</a>
+      </nav>
+      <span id="mode" class="ml-auto text-xs px-2 py-1 rounded bg-slate-100"></span>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 grid lg:grid-cols-[420px_1fr] gap-6">
+    <section class="space-y-4">
+      <!-- step 1 -->
+      <div class="bg-white rounded-xl border p-4">
+        <label class="text-xs font-semibold uppercase tracking-wide text-slate-500">Your restaurant</label>
+        <select id="donor" class="mt-1 w-full border rounded-lg px-3 py-2"></select>
+        <p id="donorInfo" class="text-xs text-slate-500 mt-2"></p>
+      </div>
+
+      <!-- step 2 -->
+      <div id="stepPhoto" class="bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">1 · Photograph the surplus food</h2>
+        <p class="text-sm text-slate-500 mt-1">One photo. Gemini identifies the dish, servings and how long it stays safe.</p>
+        <label class="mt-3 flex flex-col items-center justify-center border-2 border-dashed rounded-xl h-44 cursor-pointer hover:bg-emerald-50 overflow-hidden" id="drop">
+          <img id="preview" class="hidden h-full w-full object-cover" alt="" />
+          <span id="dropText" class="text-emerald-700 font-medium">📷 Take or choose a photo</span>
+          <input id="photo" type="file" accept="image/*" capture="environment" class="hidden" />
+        </label>
+        <div id="analysing" class="hidden mt-3 text-sm text-emerald-700 animate-pulse">Gemini is analysing the photo…</div>
+        <div id="photoErr" class="hidden mt-3 text-sm text-rose-700"></div>
+      </div>
+
+      <!-- step 3 -->
+      <div id="stepConfirm" class="hidden bg-white rounded-xl border p-4 space-y-3">
+        <h2 class="font-semibold">2 · Check and confirm</h2>
+        <div id="analysisCard" class="rounded-lg bg-emerald-50 border border-emerald-200 p-3 text-sm"></div>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <label>Servings<input id="servings" type="number" min="1" class="mt-1 w-full border rounded-lg px-3 py-2" /></label>
+          <label>Food type
+            <select id="diet" class="mt-1 w-full border rounded-lg px-3 py-2">
+              <option value="veg">Veg</option><option value="egg">Egg</option><option value="non_veg">Non-veg</option>
+            </select></label>
+          <label>Cooked at<input id="cookedAt" type="time" class="mt-1 w-full border rounded-lg px-3 py-2" /></label>
+          <label>Kept
+            <select id="storage" class="mt-1 w-full border rounded-lg px-3 py-2">
+              <option value="hot_held">Hot (60 °C+)</option><option value="room_temp">Room temp</option>
+              <option value="refrigerated">Refrigerated</option>
+            </select></label>
+        </div>
+        <button id="confirmBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg py-3">Find an NGO</button>
+        <div id="confirmErr" class="hidden text-sm text-rose-700"></div>
+      </div>
+
+      <!-- step 4 -->
+      <div id="stepStatus" class="hidden bg-white rounded-xl border p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="font-semibold">3 · Live status</h2><span id="dStatus"></span>
+        </div>
+        <div id="donSummary" class="flex gap-3 items-center"></div>
+        <div id="safetyBox" class="text-sm"></div>
+        <ol id="timeline" class="space-y-2 text-sm"></ol>
+        <button id="newBtn" class="w-full border rounded-lg py-2 text-sm">Donate something else</button>
+      </div>
+    </section>
+
+    <section class="space-y-4">
+      <div id="map" class="h-[420px] lg:h-[560px] rounded-xl border bg-white"></div>
+    </section>
+    <section id="matchList" class="lg:col-span-2 bg-white rounded-xl border p-5 text-sm hidden"></section>
+  </main>
+
+<script>
+let donors = [], ngos = [], donation = null, pollTimer = null, file = null;
+const map = baseMap("map"); addLegend(map);
+const ngoLayer = L.layerGroup().addTo(map), donorLayer = L.layerGroup().addTo(map), lineLayer = L.layerGroup().addTo(map);
+const $ = (id) => document.getElementById(id);
+
+async function init() {
+  const [cfg, d, n] = await Promise.all([api("/api/config"), api("/api/donors"), api("/api/ngos")]);
+  donors = d; ngos = n;
+  $("mode").textContent = cfg.gemini ? `Gemini: ${cfg.model}` : "Demo mode (no Gemini key)";
+  $("mode").className += cfg.gemini ? " text-emerald-700" : " text-amber-700 bg-amber-50";
+  $("donor").innerHTML = donors.map((x) => `<option value="${x.donor_id}">${esc(x.name)} · ${esc(x.locality)}</option>`).join("");
+  $("donor").onchange = showDonor; showDonor(); drawNgos();
+  const t = new Date(Date.now() - 60 * 60000); $("cookedAt").value = t.toTimeString().slice(0, 5);
+  const existing = new URLSearchParams(location.search).get("donation");  // shareable live-status link
+  if (existing) {
+    donation = { donation_id: existing };
+    $("stepPhoto").classList.add("hidden"); $("stepStatus").classList.remove("hidden");
+    await poll(); pollTimer = setInterval(poll, 2000);
+  }
+}
+
+function showDonor() {
+  const x = donors.find((d) => d.donor_id === $("donor").value);
+  $("donorInfo").textContent = `${x.cuisines} · closes ${x.timing || "—"}`;
+  donorLayer.clearLayers();
+  L.marker([x.lat, x.lon]).bindTooltip(x.name).addTo(donorLayer);
+  map.setView([x.lat, x.lon], 12);
+}
+
+function drawNgos(matches) {
+  ngoLayer.clearLayers(); lineLayer.clearLayers();
+  const rank = {}, excl = {};
+  (matches?.eligible || []).forEach((m) => (rank[m.ngo_id] = m));
+  (matches?.excluded || []).forEach((m) => (excl[m.ngo_id] = m));
+  ngos.forEach((n) => {
+    const m = rank[n.ngo_id], x = excl[n.ngo_id];
+    const color = matches ? (m ? CAT_COLOR[n.category] : "#cbd5e1") : CAT_COLOR[n.category];
+    const mk = dot([n.lat, n.lon], color, m && m.rank <= 3 ? 10 : 7).addTo(ngoLayer);
+    mk.bindTooltip(`<b>${esc(n.name)}</b><br>${n.category}${m ? `<br>#${m.rank} · score ${m.score}` : ""}${x ? `<br>✕ ${esc(x.reason)}` : ""}`);
+  });
+}
+
+$("photo").onchange = async (e) => {
+  file = e.target.files[0]; if (!file) return;
+  $("preview").src = URL.createObjectURL(file); $("preview").classList.remove("hidden"); $("dropText").classList.add("hidden");
+  $("analysing").classList.remove("hidden"); $("photoErr").classList.add("hidden");
+  const fd = new FormData(); fd.append("donor_id", $("donor").value); fd.append("photo", file);
+  try {
+    const r = await api("/api/donations", { method: "POST", body: fd });
+    donation = r; showAnalysis(r.analysis);
+  } catch (err) { $("photoErr").textContent = err.message; $("photoErr").classList.remove("hidden"); }
+  $("analysing").classList.add("hidden");
+};
+
+function showAnalysis(a) {
+  if (!a.is_food) { $("photoErr").textContent = "That doesn't look like food. Try another photo."; $("photoErr").classList.remove("hidden"); return; }
+  $("analysisCard").innerHTML = `
+    <div class="flex items-start justify-between gap-2">
+      <div><div class="font-semibold text-base">${esc(a.dish_name)}</div>
+      <div class="text-slate-600">${esc(a.items.join(", "))}</div></div>${dietBadge(a.diet)}</div>
+    <div class="grid grid-cols-3 gap-2 mt-3 text-center">
+      <div class="bg-white rounded p-2"><div class="text-lg font-bold">${a.estimated_servings}</div><div class="text-xs text-slate-500">servings</div></div>
+      <div class="bg-white rounded p-2"><div class="text-lg font-bold">${a.estimated_weight_kg}</div><div class="text-xs text-slate-500">kg</div></div>
+      <div class="bg-white rounded p-2"><div class="text-lg font-bold">${a.safe_hours_room_temp}h</div><div class="text-xs text-slate-500">safe at room temp</div></div>
+    </div>
+    <p class="mt-2 text-xs text-slate-600">${esc(a.servings_reasoning)}</p>
+    ${a.risk_factors.length ? `<p class="mt-1 text-xs"><b>Risk:</b> ${esc(a.risk_factors.join(", "))}</p>` : ""}
+    ${a.visible_spoilage ? `<p class="mt-1 text-xs text-rose-700 font-semibold">⚠ Visible spoilage detected</p>` : ""}
+    <p class="mt-1 text-xs text-slate-500">${esc(a.observations)} · <i>${esc(a.source)}</i></p>`;
+  $("servings").value = a.estimated_servings; $("diet").value = a.diet;
+  $("stepConfirm").classList.remove("hidden");
+}
+
+$("confirmBtn").onclick = async () => {
+  const [h, m] = $("cookedAt").value.split(":").map(Number);
+  const cooked = new Date(); cooked.setHours(h, m, 0, 0);
+  if (cooked > new Date()) cooked.setDate(cooked.getDate() - 1); // cooked yesterday evening
+  $("confirmBtn").disabled = true; $("confirmErr").classList.add("hidden");
+  try {
+    const v = await postJSON(`/api/donations/${donation.donation_id}/confirm`, {
+      servings: +$("servings").value, diet: $("diet").value, cooked_at: cooked.toISOString(), storage: $("storage").value,
+    });
+    $("stepPhoto").classList.add("hidden"); $("stepConfirm").classList.add("hidden"); $("stepStatus").classList.remove("hidden");
+    history.replaceState(null, "", `?donation=${v.id}`);
+    render(v); pollTimer = setInterval(poll, 2000);
+  } catch (err) { $("confirmErr").textContent = err.message; $("confirmErr").classList.remove("hidden"); }
+  $("confirmBtn").disabled = false;
+};
+
+async function poll() { render(await api(`/api/donations/${donation.donation_id}`)); }
+
+function render(v) {
+  $("dStatus").innerHTML = statusPill(v.status);
+  $("donSummary").innerHTML = `<img src="${esc(v.photo_path)}" class="w-16 h-16 rounded-lg object-cover bg-slate-100" alt="" />
+    <div class="min-w-0"><div class="font-semibold truncate">${esc(v.analysis?.dish_name)}</div>
+    <div class="text-xs text-slate-500">${v.servings} servings · ${dietBadge(v.diet)} · ${esc(v.donor?.name)}</div></div>`;
+  const s = v.safety, left = minsUntil(v.safe_until, v.server_time);
+  $("safetyBox").innerHTML = s.blocked
+    ? `<div class="rounded-lg bg-rose-50 border border-rose-200 p-3 text-rose-800"><b>Blocked:</b> ${esc(s.blocked_reason)}<br><span class="text-xs">${esc(s.rule)}</span></div>`
+    : `<div class="rounded-lg bg-slate-50 border p-3"><div class="flex justify-between"><span>Safe until <b>${fmtTime(v.safe_until)}</b></span><span class="${left < 60 ? "text-rose-700" : "text-emerald-700"} font-semibold">${left} min left</span></div>
+       <div class="text-xs text-slate-500 mt-1">${esc(s.rule)} · Gemini estimate ${s.ai_hours} h</div></div>`;
+  $("timeline").innerHTML = v.offers.map((o) => `
+    <li class="flex items-center justify-between border rounded-lg px-3 py-2">
+      <span><span class="text-slate-400">#${o.rank}</span> ${esc(o.ngo_name)}</span>
+      <span class="flex items-center gap-2">${o.status === "pending" ? `<span class="font-mono text-xs text-amber-700">${countdown(o.expires_at)}</span>` : ""}${statusPill(o.status)}</span>
+    </li>`).join("") + (v.status === "unmatched" ? `<li class="text-rose-700">No NGO can receive this food in time.</li>` : "");
+  drawNgos(v.matches);
+  const acc = v.offers.find((o) => o.status === "accepted");
+  if (acc) {
+    const n = ngos.find((x) => x.ngo_id === acc.ngo_id);
+    L.polyline([[v.donor.lat, v.donor.lon], [n.lat, n.lon]], { color: "#059669", weight: 4, dashArray: "6 6" }).addTo(lineLayer);
+  }
+  renderMatches(v);
+  if (["delivered", "expired", "unmatched"].includes(v.status)) clearInterval(pollTimer);
+}
+
+// ---------- matching table ----------
+const marginClass = (m) => (m >= 60 ? "text-emerald-700" : m >= 30 ? "text-amber-700" : "text-rose-700");
+const catPill = (c) => `<span class="inline-block text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded" style="background:${CAT_COLOR[c]}1f;color:${CAT_COLOR[c]}">${esc(c)}</span>`;
+const bar = (pct, color = "#2a78d6") => `<div class="h-1.5 w-16 bg-slate-100 rounded"><div class="h-1.5 rounded" style="width:${Math.max(0, Math.min(100, pct))}%;background:${color}"></div></div>`;
+
+function matchRow(e, servings) {
+  const p = e.score_parts || {};
+  const usable = e.usable_meals ?? Math.min(e.meal_gap, servings);
+  const covers = usable >= servings ? `can use all ${servings}` : `can use ${usable} of ${servings}`;
+  return `<tr class="border-t align-top" data-ngo="${e.ngo_id}">
+    <td class="py-2.5 pr-2 font-semibold text-slate-400 tabular-nums">${e.rank}</td>
+    <td class="py-2.5 pr-3 min-w-[220px]"><div class="font-medium text-slate-900 leading-snug">${esc(e.name)}</div>
+      <div class="mt-1 flex items-center gap-1.5 flex-wrap">${catPill(e.category)}${e.ward ? `<span class="text-[11px] text-slate-500">${esc(e.ward)}</span>` : ""}</div></td>
+    <td class="py-2.5 pr-3" title="Need ${p.need} + food fit ${p.fit} + safety margin ${p.margin}">
+      <div class="font-semibold tabular-nums">${e.score}</div>${bar(e.score)}</td>
+    <td class="py-2.5 pr-3 tabular-nums whitespace-nowrap"><div class="font-medium">${e.meal_gap} today</div><div class="text-[11px] text-slate-500">${covers}</div></td>
+    <td class="py-2.5 pr-3 tabular-nums whitespace-nowrap"><div class="font-medium">${e.km} km</div><div class="text-[11px] text-slate-500">~${e.travel_min} min</div></td>
+    <td class="py-2.5 pr-3 tabular-nums whitespace-nowrap font-semibold ${marginClass(e.margin_min)}">${e.margin_min} min</td>
+    <td class="py-2.5 pr-3 tabular-nums"><div class="font-medium">${Math.round(e.need_score)}<span class="text-slate-400 font-normal">/100</span></div>${bar(e.need_score, "#eb6834")}</td>
+    <td class="py-2.5 offer-cell"></td></tr>`;
+}
+
+let matchFor = null;
+function renderMatches(v) {
+  const m = v.matches || { eligible: [], excluded: [] };
+  const box = $("matchList");
+  box.classList.toggle("hidden", !m.eligible.length && !m.excluded.length);
+  if (matchFor !== v.id) {  // build once per donation; afterwards only offer statuses change
+    matchFor = v.id;
+    const top = m.eligible.slice(0, 6), rest = m.eligible.slice(6);
+    const head = `<thead><tr class="text-left text-[11px] uppercase tracking-wide text-slate-500 whitespace-nowrap">
+      <th class="pb-2 pr-2">#</th><th class="pb-2 pr-3">NGO</th><th class="pb-2 pr-3">Score</th><th class="pb-2 pr-3">Meals needed</th>
+      <th class="pb-2 pr-3">Distance</th><th class="pb-2 pr-3">Safety margin</th><th class="pb-2 pr-3">Ward need</th><th class="pb-2">Offer</th></tr></thead>`;
+    box.innerHTML = `
+      <div class="flex items-start justify-between gap-3 flex-wrap">
+        <div><h3 class="font-semibold text-base">NGO matching</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Ranked by need 45% · how much of the food they can use 30% · safety margin 25%</p></div>
+        <div class="flex gap-2 text-xs">
+          <span class="px-2 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200"><b>${m.eligible.length}</b> can receive in time</span>
+          <span class="px-2 py-1 rounded-full bg-slate-100 text-slate-600 border"><b>${m.excluded.length}</b> filtered out</span></div>
+      </div>
+      <div class="overflow-x-auto mt-3"><table class="w-full text-sm">${head}<tbody>${top.map((e) => matchRow(e, v.servings)).join("")}</tbody>
+        <tbody id="moreRows" class="hidden">${rest.map((e) => matchRow(e, v.servings)).join("")}</tbody></table></div>
+      ${rest.length ? `<button id="moreBtn" class="mt-1 text-xs text-emerald-700 py-2" onclick="const h=$('moreRows').classList.toggle('hidden');this.textContent=h?'▸ Show ${rest.length} more NGOs that can receive in time':'▾ Show fewer'">▸ Show ${rest.length} more NGOs that can receive in time</button>` : ""}
+      ${m.excluded.length ? `<details class="mt-2 border-t pt-2"><summary class="cursor-pointer text-xs text-slate-600 py-1">Filtered out (${m.excluded.length}): can't be reached safely or diet mismatch</summary>
+        <ul class="mt-2 space-y-1.5">${m.excluded.map((e) => `<li class="flex items-center justify-between gap-3 text-xs">
+          <span class="flex items-center gap-2 text-slate-600"><span class="text-rose-500">✕</span>${esc(e.name)} ${catPill(e.category)}</span>
+          <span class="text-slate-500 text-right">${esc(e.reason)} · ${e.km} km</span></li>`).join("")}</ul></details>` : ""}`;
+  }
+  const byNgo = {};
+  v.offers.forEach((o) => (byNgo[o.ngo_id] = o));
+  box.querySelectorAll("tr[data-ngo]").forEach((tr) => {
+    const o = byNgo[tr.dataset.ngo];
+    tr.classList.toggle("bg-amber-50", o?.status === "pending");
+    tr.classList.toggle("bg-emerald-50", o?.status === "accepted");
+    tr.querySelector(".offer-cell").innerHTML = o ? statusPill(o.status) : `<span class="text-[11px] text-slate-400">queued</span>`;
+  });
+}
+
+$("newBtn").onclick = () => location.reload();
+init();
+</script>
+</body>
+</html>

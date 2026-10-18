@@ -1,0 +1,21 @@
+ngo_id,source,source_id,name,address,lat,lon,geo_confidence,geo_source,phone,category,ward_no,ward_name,ward_population,ward_density_per_km2,ward_scst_share,sim_capacity_meals,sim_daily_meal_gap,sim_accepts_nonveg,sim_has_fridge,sim_has_vehicle,need_score
+NGO028,openstreetmap,osm/way/346019709,Missionaries of Charity - Nirmala Shishubhavan,,13.0046459,77.6195021,high,osm,,children,60.0,Sagayarapuram,35334.0,45939.0,0.292,128,45,True,True,False,82.6
+NGO006,openstreetmap,osm/way/1391367684,Snehasadan Orphanage,,12.8808818,77.5901699,high,osm,,children,194.0,Gottigere,51911.0,8168.0,0.155,44,19,False,True,False,73.5
+NGO007,openstreetmap,osm/way/1390079395,Sumanahalli Support Community Care Center,,12.9814926,77.5179695,high,osm,,community,73.0,Kottegepalya,68922.0,11770.0,0.1,121,54,False,True,True,68.4
+NGO020,openstreetmap,osm/node/5632636923,Abhayadhama,,12.980077,77.7485727,high,osm,,community,83.0,Kadugodi,43942.0,3843.0,0.203,216,91,True,True,True,66.3
+NGO032,openstreetmap,osm/way/781182581,Society of the Little Sisters of the Poor,,12.9606362,77.6057975,high,osm,,elderly,117.0,Shanthi Nagar,42095.0,15577.0,0.164,45,15,True,False,False,65.1
+NGO012,openstreetmap,osm/way/1206360030,BOSCO Mane,,12.958257,77.569312,high,osm,,children,140.0,Chamrajapet,32213.0,30771.0,0.054,122,48,True,True,False,64.5
+NGO030,openstreetmap,osm/way/460225728,Cheshire Homes,,12.9599956,77.649864,high,osm,,disabled,88.0,Jeevanbhima Nagar,38251.0,20321.0,0.261,54,12,False,True,False,60.1
+NGO025,openstreetmap,osm/way/135266058,St. Michael's Home,,12.9844576,77.6464785,high,osm,,homeless,58.0,New Tippasandara,43983.0,13102.0,0.12,60,22,True,False,True,59.5
+NGO016,openstreetmap,osm/way/1452541767,MSMI Anugraha Children's Home,,12.9168215,77.7163362,high,osm,,children,149.0,Varthuru,54625.0,2039.0,0.174,42,16,True,False,True,59.1
+NGO019,openstreetmap,osm/node/5619006321,Home of Faith,,13.0713862,77.65634,high,osm,,community,25.0,Horamavu,95368.0,5390.0,0.145,243,83,True,True,False,49.4
+NGO023,openstreetmap,osm/way/35927357,Sisters of St Charles,,13.0469685,77.643915,high,osm,,community,25.0,Horamavu,95368.0,5390.0,0.145,201,62,True,True,True,46.2
+NGO005,openstreetmap,osm/way/1409123687,Elizabeth Care home,,12.9319899,77.6124959,high,osm,,elderly,152.0,Suddagunte Palya,39997.0,23100.0,0.097,29,7,False,False,False,44.7
+NGO018,openstreetmap,osm/node/5609365722,YMCA dream home,,13.0256565,77.6189083,high,osm,,community,23.0,Nagavara,60483.0,29239.0,0.118,93,14,False,True,False,44.5
+NGO024,openstreetmap,osm/node/11303696484,Belaku Vatsalya Dhama,,12.9097266,77.5824286,high,osm,,elderly,178.0,Sarakki,31034.0,23390.0,0.075,35,5,True,False,False,34.5
+NGO021,openstreetmap,osm/node/9183197254,Beena Ville,"#270, 1st Main, 6th Cross, Hosa Road, 560100",12.8727454,77.6538377,high,osm,,homeless,191.0,Singasandra,71004.0,7525.0,0.16,82,10,True,True,False,32.9
+NGO022,openstreetmap,osm/node/12617748991,Shivacharana Old Age Home,"308, Halasahalli Road",12.9369386,77.7504357,high,osm,,elderly,149.0,Varthuru,54625.0,2039.0,0.174,61,9,False,False,True,32.5
+NGO026,openstreetmap,osm/way/202063465,Ashraya Vrudhasharama,,12.9065498,77.5417857,high,osm,,elderly,184.0,Uttarahalli,57209.0,6274.0,0.132,53,5,True,True,True,21.0
+NGO052,ngo_darpan,KA/2025/0558080,A S V N V Sangha,"39/2, 6th Floor, A.S.V.N.V. Bhavan, Kempe Gowda Road, Gandhinagar, Bengaluru",12.9771534,77.5800313,medium,nominatim:suburb,,elderly,94.0,Gandhinagar,31208.0,16583.0,0.213,89,38,False,True,True,83.4
+NGO035,ngo_darpan,KA/2022/0306954,Aarambh Foundation,"TF 28, SOWPARNIKA SANVI PHASE-1, C BLOCK, Vijayanagar, Bengaluru",12.9709537,77.5373851,medium,nominatim:railway,,children,125.0,Marenahalli,21171.0,30763.0,0.045,99,43,True,True,False,71.5
+NGO062,ngo_darpan,KA/2025/0559281,Aasha Infinite Foundation,"Govindhaam, No. 426, 6th Sector, 16th Cross, 5th Main, HSR layout, Bangalore",12.9116225,77.6388622,medium,nominatim:suburb,,children,174.0,HSR Layout,63033.0,8949.0,0.105,102,42,False,False,False,59.6

@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FoodBridge · Forecast</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="/static/common.js"></script>
+  <style>.leaflet-container{font:inherit}</style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+  <header class="bg-white border-b sticky top-0 z-[1000]">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-4">
+      <a href="/" class="font-bold text-lg text-emerald-700">FoodBridge</a>
+      <nav class="flex gap-3 text-sm">
+        <a href="/" class="text-slate-500 hover:text-slate-900">Donate</a>
+        <a href="/ngo" class="text-slate-500 hover:text-slate-900">NGO inbox</a>
+        <a href="/control" class="text-slate-500 hover:text-slate-900">Control room</a>
+        <a href="/forecast" class="font-semibold text-slate-900">Forecast</a>
+        <a href="/dashboard" class="text-slate-500 hover:text-slate-900">Impact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <div>
+      <h1 class="text-2xl font-bold" id="title">Tonight's surplus forecast</h1>
+      <p class="text-sm text-slate-500" id="subtitle"></p>
+    </div>
+
+    <section class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="kpis"></section>
+
+    <section class="grid lg:grid-cols-3 gap-4">
+      <div class="bg-white rounded-xl border p-4">
+        <h2 class="font-semibold flex items-center gap-2"><span class="text-emerald-600">✦</span> Dispatch briefing <span class="text-xs font-normal text-slate-400">written by Gemini</span></h2>
+        <div id="briefing" class="mt-3 text-sm leading-relaxed whitespace-pre-line text-slate-700 animate-pulse">Gemini is writing tonight's briefing…</div>
+      </div>
+      <div class="lg:col-span-2 bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">Expected surplus by hour</h2>
+        <div class="h-56 mt-2"><canvas id="hours" aria-label="Expected meals by hour" role="img"></canvas></div>
+      </div>
+    </section>
+
+    <section class="grid lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 bg-white rounded-xl border p-4">
+        <h2 class="font-semibold">Where surplus will appear vs where it's needed</h2>
+        <div id="map" class="h-[420px] mt-2 rounded-lg"></div>
+      </div>
+      <div class="bg-white rounded-xl border p-4 text-sm">
+        <h2 class="font-semibold">How the forecast works</h2>
+        <ul class="mt-2 space-y-2 text-slate-600 text-xs list-disc pl-4">
+          <li>Every listed donation is logged with place, time and servings (BigQuery in production).</li>
+          <li>Per ~3 km area: a weekday-aware average of past nights (60%) blended with the last 14 nights (40%), plus the area's hour-of-day profile.</li>
+          <li>For each busy area, NGOs that can reach it within 35 min at the peak hour are suggested for standby, ranked by need.</li>
+          <li>Accuracy is measured on the last 7 completed nights, each predicted only from earlier nights.</li>
+          <li>Production: the same features feed a Vertex AI / BigQuery ML forecasting model once real pickups accumulate.</li>
+        </ul>
+        <div id="bt" class="mt-4 rounded-lg bg-slate-50 border p-3 text-xs"></div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-xl border p-4">
+      <h2 class="font-semibold">Area plan for tonight</h2>
+      <div class="overflow-x-auto"><table class="w-full text-sm mt-2">
+        <thead class="text-left text-xs text-slate-500"><tr><th class="py-2">Area</th><th>Expected meals</th><th>Peak window</th><th>Standby plan: NGO · meals · travel time</th></tr></thead>
+        <tbody id="areas"></tbody></table></div>
+    </section>
+  </main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const nf = (n) => Number(n || 0).toLocaleString("en-IN");
+const SURPLUS = "#eb6834", DEMAND = "#2a78d6"; // validated categorical slots 2 and 1
+
+async function load() {
+  const f = await api("/api/forecast");
+  const night = new Date(f.night + "T12:00:00");
+  $("title").textContent = `Tonight's surplus forecast · ${night.toLocaleDateString([], { weekday: "long", day: "numeric", month: "short" })}`;
+  $("subtitle").textContent = `Learned from ${f.history_nights} nights of donation history (simulated for the demo) across ${f.areas.length} active areas.`;
+  const peak = f.by_hour.reduce((a, b) => (b.meals > a.meals ? b : a), { meals: 0 });
+  const bt = f.backtest;
+  const tiles = [
+    ["Expected surplus tonight", `${nf(f.expected_meals)} meals`, `${f.areas.length} areas`],
+    ["NGO meal gap (demand)", `${nf(f.ngo_meal_gap)} meals`, f.expected_meals > f.ngo_meal_gap ? "surplus exceeds demand" : "demand exceeds surplus"],
+    ["Busiest hour", peak.hour || "—", `${nf(peak.meals)} meals expected`],
+    ["Forecast accuracy", bt ? `±${bt.city_total_error_pct}%` : "—", bt ? `city total · ${bt.improvement_pct}% better than naive per area` : "needs 3+ weeks of history"],
+  ];
+  $("kpis").innerHTML = tiles.map(([k, v, sub]) => `<div class="bg-white rounded-xl border p-4"><div class="text-xs text-slate-500">${k}</div><div class="text-2xl font-bold mt-1 tabular-nums">${v}</div><div class="text-xs text-slate-400 mt-1">${sub}</div></div>`).join("");
+
+  $("bt").innerHTML = bt ? `<b>Backtest (last ${bt.nights} nights, ${bt.areas} areas)</b><br>
+    Average error per area-night: <b>${bt.mae_meals_per_area}</b> meals vs ${bt.naive_mae_meals_per_area} for a naive average (${bt.improvement_pct}% better).<br>
+    City-wide total off by <b>${bt.city_total_error_pct}%</b> on average.` : "Not enough history yet.";
+
+  new Chart($("hours"), {
+    type: "bar",
+    data: { labels: f.by_hour.map((h) => h.hour), datasets: [{ data: f.by_hour.map((h) => h.meals), backgroundColor: SURPLUS, borderRadius: { topLeft: 4, topRight: 4 }, borderSkipped: "bottom", maxBarThickness: 28 }] },
+    options: { maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (i) => ` ${nf(i.raw)} meals expected` } } },
+      scales: { x: { grid: { display: false }, ticks: { color: "#64748b" } }, y: { beginAtZero: true, grid: { color: "#f1f5f9" }, border: { display: false }, ticks: { color: "#64748b" } } } },
+  });
+
+  const map = baseMap("map");
+  const lg = L.control({ position: "bottomleft" });
+  lg.onAdd = () => { const d = L.DomUtil.create("div", "bg-white/90 rounded-lg border px-3 py-2 text-xs space-y-1");
+    d.innerHTML = `<div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded-full" style="background:${SURPLUS}"></span>Expected surplus (size = meals)</div><div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rounded-full" style="background:${DEMAND}"></span>NGO meal gap (size = meals)</div>`; return d; };
+  lg.addTo(map);
+  const r = (m) => 4 + Math.sqrt(m) * 1.6;
+  f.ngos.forEach((n) => dot([n.lat, n.lon], DEMAND, r(n.meal_gap), { fillOpacity: 0.55 }).bindTooltip(`<b>${esc(n.name)}</b><br>needs ~${n.meal_gap} meals today`).addTo(map));
+  f.areas.forEach((a) => dot([a.lat, a.lon], SURPLUS, r(a.expected_meals), { fillOpacity: 0.7 }).bindTooltip(`<b>${esc(a.area)}</b><br>~${a.expected_meals} meals · ${a.window}<br>standby: ${a.standby.map((s) => esc(s.name)).join(", ") || "none in reach"}`).addTo(map));
+  map.fitBounds(L.latLngBounds([...f.areas.map((a) => [a.lat, a.lon]), ...f.ngos.map((n) => [n.lat, n.lon])]).pad(0.05));
+
+  $("areas").innerHTML = f.areas.map((a) => `<tr class="border-t"><td class="py-2 font-medium">${esc(a.area)}</td><td class="tabular-nums">${nf(a.expected_meals)}</td><td>${a.window}</td>
+    <td class="text-xs text-slate-600">${a.standby.map((s) => `${esc(s.name)} · ${s.meals} · ${s.minutes} min`).join("<br>") || '<span class="text-rose-600">no NGO capacity within 35 min</span>'}${a.standby.length && a.uncovered_meals ? `<br><span class="text-rose-600">${a.uncovered_meals} meals without standby capacity</span>` : ""}</td></tr>`).join("");
+
+  const b = await api("/api/forecast/briefing").catch((e) => ({ text: `Briefing unavailable: ${e.message}` }));
+  $("briefing").classList.remove("animate-pulse"); $("briefing").textContent = b.text;
+}
+load();
+</script>
+</body>
+</html>

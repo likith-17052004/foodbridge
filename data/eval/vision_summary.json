@@ -1,0 +1,53 @@
+{
+  "photos": 240,
+  "errors": 0,
+  "model": "openrouter:google/gemini-3.6-flash",
+  "dish_accuracy_pct": 75.8,
+  "diet_accuracy_pct": 99.6,
+  "nonveg_caught_pct": 93.3,
+  "veg_called_nonveg_pct": 0.0,
+  "is_food_pct": 98.8,
+  "median_latency_s": 6.89,
+  "worst_classes": [
+    [
+      0.0,
+      "chhena_kheeri"
+    ],
+    [
+      0.0,
+      "chicken_tikka_masala"
+    ],
+    [
+      0.0,
+      "ledikeni"
+    ],
+    [
+      0.0,
+      "sheer_korma"
+    ],
+    [
+      33.3,
+      "bhatura"
+    ],
+    [
+      33.3,
+      "daal_puri"
+    ],
+    [
+      33.3,
+      "dharwad_pedha"
+    ],
+    [
+      33.3,
+      "kadai_paneer"
+    ],
+    [
+      33.3,
+      "karela_bharta"
+    ],
+    [
+      33.3,
+      "kofta"
+    ]
+  ]
+}

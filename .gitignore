@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+data/raw/food_images/
+data/raw/pincode/
+data/raw/zomato/
+data/uploads/
+data/cache/
+data/*.db
+Google_AI_builder_cup_challenge.pdf
+data/eval/run.log

@@ -1,0 +1,4017 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-07-15T15:22:01Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 573421153,
+  "lat": 12.9852385,
+  "lon": 77.5967481,
+  "tags": {
+    "addr:city": "Bangalore",
+    "addr:country": "IN",
+    "addr:housename": "Sair Bagh",
+    "addr:housenumber": "19/4",
+    "addr:postcode": "560052",
+    "addr:street": "Cunningham Road",
+    "addr:suburb": "Vasanth Nagar",
+    "level": "3",
+    "name": "Janaagraha",
+    "name:kn": "ಜನಾಗ್ರಹ",
+    "office": "ngo",
+    "operator:wikidata": "Q6150612",
+    "toilets:wheelchair": "no",
+    "website": "https://www.janaagraha.org/",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 1492185606,
+  "lat": 12.9640245,
+  "lon": 77.6407480,
+  "tags": {
+    "addr:housenumber": "3524/1",
+    "addr:postcode": "560008",
+    "addr:street": "1st Cross, Domlur Service Road, Doopanhalli, HAL 2nd Stage, Indiranagar",
+    "name": "Assocham",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 1617398466,
+  "lat": 12.9928414,
+  "lon": 77.5753482,
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Lakshmi Nursing Home",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "node",
+  "id": 1837722493,
+  "lat": 12.9967249,
+  "lon": 77.6616773,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 1837722553,
+  "lat": 12.9982067,
+  "lon": 77.6613582,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 2116527099,
+  "lat": 12.9742636,
+  "lon": 77.5992958,
+  "tags": {
+    "name": "Rotary Club",
+    "name:kn": "ರೊಟರಿ ಕ್ಲಬ್",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 2304523794,
+  "lat": 12.9808553,
+  "lon": 77.6019476,
+  "tags": {
+    "addr:housenumber": "122/4",
+    "addr:postcode": "560001",
+    "addr:street": "Infantry Road",
+    "name": "Alternative Law Forum",
+    "office": "ngo",
+    "website": "https://altlawforum.org/"
+  }
+},
+{
+  "type": "node",
+  "id": 2338286220,
+  "lat": 13.0677029,
+  "lon": 77.5599640,
+  "tags": {
+    "addr:district": "Bengaluru Urban",
+    "addr:full": "Nanjappa Road, Vidyaranna Pura Main Road",
+    "addr:postcode": "560097",
+    "addr:state": "Karnataka",
+    "amenity": "social_facility",
+    "check_date": "2025-06-15",
+    "name": "Kruthika Nursing Home",
+    "name:kn": "ಕೃತಿಕಾ",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior",
+    "source": "OpenGovernmentData",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "node",
+  "id": 2360192423,
+  "lat": 12.9276400,
+  "lon": 77.5902190,
+  "tags": {
+    "addr:city": "Jayanagar 4th T Block, Bangalore",
+    "addr:district": "Bengaluru Urban",
+    "addr:housename": "IT for change",
+    "addr:housenumber": "#1371",
+    "addr:postcode": "5600041",
+    "addr:street": "31st \"B\" Cross Road",
+    "name": "IT for change",
+    "name:kn": "ಐಟಿ ಫಾರ್ ಚೇಂಜ್",
+    "office": "ngo",
+    "phone": "080-26536890, 080-26654134",
+    "website": "https://itforchange.net"
+  }
+},
+{
+  "type": "node",
+  "id": 2414094392,
+  "lat": 12.9157954,
+  "lon": 77.6852217,
+  "tags": {
+    "name": "Azim Premji Foundation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 2446920446,
+  "lat": 12.9000279,
+  "lon": 77.6221070,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 2446920447,
+  "lat": 12.9001504,
+  "lon": 77.6221198,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 2641834219,
+  "lat": 13.0484114,
+  "lon": 77.5796283,
+  "tags": {
+    "addr:city": "Bangalore",
+    "addr:postcode": "560094",
+    "addr:street": "10th Cross",
+    "name": "CSTEP",
+    "name:en": "Center for Study of Science, Technology and Policy",
+    "office": "ngo",
+    "phone": "+91 80 6690 2500",
+    "source": "CSTEP",
+    "website": "https://cstep.in/"
+  }
+},
+{
+  "type": "node",
+  "id": 2785999430,
+  "lat": 12.9855373,
+  "lon": 77.5919420,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 2956828447,
+  "lat": 12.9592401,
+  "lon": 77.6356973,
+  "tags": {
+    "addr:city": "Bangalore",
+    "addr:postcode": "560071",
+    "name": "Ashoka Innovators For The Public",
+    "office": "ngo",
+    "opening_hours": "09:00-18:00",
+    "smoking": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 2975331589,
+  "lat": 12.9697385,
+  "lon": 77.5362110,
+  "tags": {
+    "addr:city": "Bangalore",
+    "addr:housenumber": "#317/85",
+    "addr:postcode": "560040",
+    "addr:street": "18th Main",
+    "name": "Kalike",
+    "office": "ngo",
+    "opening_hours": "09:00-17:00"
+  }
+},
+{
+  "type": "node",
+  "id": 3080665938,
+  "lat": 12.8318108,
+  "lon": 77.4853264,
+  "tags": {
+    "addr:city": "Bangalore",
+    "building": "school",
+    "name": "E4D Banjarapalya Centre;E4D banjarapalya",
+    "office": "ngo",
+    "smoking": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 3426275261,
+  "lat": 13.0100716,
+  "lon": 77.6571211,
+  "tags": {
+    "addr:city": "Bangalore",
+    "addr:housename": "No. 621",
+    "addr:street": "OMBR",
+    "name": "Akshara Foundation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 3426275262,
+  "lat": 13.0101493,
+  "lon": 77.6571308,
+  "tags": {
+    "addr:housename": "3rd Floor, No. 621",
+    "name": "Pratham Books",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 3726039619,
+  "lat": 12.9694953,
+  "lon": 77.6416662,
+  "tags": {
+    "addr:street": "100 Feet Road",
+    "name": "Asha Foundation Trust",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 3805428941,
+  "lat": 12.9701863,
+  "lon": 77.6167093,
+  "tags": {
+    "level": "0",
+    "name": "ActionAid",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 4275690250,
+  "lat": 12.9790088,
+  "lon": 77.6363845,
+  "tags": {
+    "addr:housenumber": "235",
+    "addr:street": "13th Cross",
+    "name": "Amnesty International",
+    "office": "ngo",
+    "website": "https://www.amnesty.org.in/"
+  }
+},
+{
+  "type": "node",
+  "id": 4315529536,
+  "lat": 12.9696627,
+  "lon": 77.6365282,
+  "tags": {
+    "name": "Plong",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 4350001284,
+  "lat": 13.0041354,
+  "lon": 77.5623508,
+  "tags": {
+    "addr:city": "Bengaluru",
+    "addr:country": "IN",
+    "addr:housenumber": "16/2",
+    "addr:place": "Malleshwaram",
+    "addr:postcode": "560003",
+    "addr:street": "11th Main Road",
+    "description": "ISPF is a non-profit trust focused on promoting Innovation and Science, especially amongst children. ISPF’s current focus is creating experience-based learning opportunities where science can be learnt using hands-on, interactive experiences.",
+    "email": "contact@ispf.in",
+    "name": "Innovation and Science Promotion Foundation",
+    "name_1": "ISPF",
+    "office": "ngo",
+    "opening_hours": "08:30-18:00",
+    "phone": "+9199028 74525",
+    "smoking": "no",
+    "website": "https://ispf.in"
+  }
+},
+{
+  "type": "node",
+  "id": 4360019799,
+  "lat": 12.9275846,
+  "lon": 77.5803735,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 4362722798,
+  "lat": 12.9333545,
+  "lon": 77.5803828,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 4472516796,
+  "lat": 12.9812972,
+  "lon": 77.6476388,
+  "tags": {
+    "name": "Institute For Cultural Research and Action",
+    "name:en": "Institute For Cultural Research and Action",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5604053622,
+  "lat": 12.9416432,
+  "lon": 77.5669962,
+  "tags": {
+    "addr:street": "Bull Temple Road, 6thMain Road",
+    "name": "Anantha shishu nivasa",
+    "name:en": "Anantha sishu nivasa",
+    "office": "ngo",
+    "opening_hours": "Mo-Sa 11:30-17:30"
+  }
+},
+{
+  "type": "node",
+  "id": 5604142122,
+  "lat": 12.9814345,
+  "lon": 77.6283604,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 5609346222,
+  "lat": 12.9641358,
+  "lon": 77.6472619,
+  "tags": {
+    "name": "Namma mane",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5609365722,
+  "lat": 13.0256565,
+  "lon": 77.6189083,
+  "tags": {
+    "name": "YMCA dream home",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5616719721,
+  "lat": 13.0679365,
+  "lon": 77.6426520,
+  "tags": {
+    "name": "Kirubai Project",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5616737024,
+  "lat": 13.0677182,
+  "lon": 77.6426191,
+  "tags": {
+    "name": "Santhosha Samsara",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5616996521,
+  "lat": 13.0652996,
+  "lon": 77.6474340,
+  "tags": {
+    "name": "The refuge foundation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5619006321,
+  "lat": 13.0713862,
+  "lon": 77.6563400,
+  "tags": {
+    "name": "Home of Faith",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5625995921,
+  "lat": 13.0430746,
+  "lon": 77.6081198,
+  "tags": {
+    "name": "Living Hope",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5632289725,
+  "lat": 12.9906539,
+  "lon": 77.6871725,
+  "tags": {
+    "name": "Sukanya ghar- SATH",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5632413921,
+  "lat": 13.0372009,
+  "lon": 77.7121393,
+  "tags": {
+    "name": "Shishu Mandir",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5632636923,
+  "lat": 12.9800770,
+  "lon": 77.7485727,
+  "tags": {
+    "name": "Abhayadhama",
+    "name:kn": "ಅಭಯಧಾಮ",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 5808716753,
+  "lat": 12.8813457,
+  "lon": 77.5253913,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 6043189035,
+  "lat": 12.9649795,
+  "lon": 77.7454613,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 6440377300,
+  "lat": 13.0074470,
+  "lon": 77.6232635,
+  "tags": {
+    "name": "Association of People with Disability",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 6886594854,
+  "lat": 12.9843552,
+  "lon": 77.5787035,
+  "tags": {
+    "addr:city": "Bengaluru",
+    "addr:district": "BENGALURU URBAN",
+    "addr:full": "Red Cross Bhavan, 326, Ist Floor, Race Course Road, Bengaluru",
+    "addr:postcode": "560001",
+    "addr:state": "Karnataka",
+    "amenity": "blood_bank",
+    "contact:mobile": "9902859859",
+    "contact:phone": "8022268435",
+    "name": "Indian Red Cross Society - Karnataka Red Cross Blood Bank",
+    "office": "ngo",
+    "opening_hours": "24/7",
+    "operator:type": "ngo",
+    "source": "OpenGovernmentData",
+    "website": "https://www.redcrosskarnataka.org/"
+  }
+},
+{
+  "type": "node",
+  "id": 6938690627,
+  "lat": 12.9987690,
+  "lon": 77.5465317,
+  "tags": {
+    "addr:district": "Bengaluru Urban",
+    "addr:full": "No. 674/A, 10Th Cross, 5Th Main, W O C Road 2nd Stage, Mahalakshmi Puram",
+    "addr:postcode": "560086",
+    "addr:state": "Karnataka",
+    "amenity": "social_facility",
+    "name": "Pragathi Nursing Home",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior",
+    "source": "OpenGovernmentData"
+  }
+},
+{
+  "type": "node",
+  "id": 6948582739,
+  "lat": 13.0059324,
+  "lon": 77.5769600,
+  "tags": {
+    "addr:district": "Bengaluru Urban",
+    "addr:full": "#79/18, 1st Cross , Vith Main Road, Gayathridevi Park Extn. Vylikaval",
+    "addr:postcode": "560003",
+    "addr:state": "Karnataka",
+    "amenity": "social_facility",
+    "name": "Ramakrishna Nursing Home, Bengaluru Urban",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior",
+    "source": "OpenGovernmentData"
+  }
+},
+{
+  "type": "node",
+  "id": 7176651803,
+  "lat": 12.9746323,
+  "lon": 77.5472612,
+  "tags": {
+    "addr:city": "Bengaluru",
+    "addr:country": "IN",
+    "addr:housenumber": "2/106",
+    "addr:postcode": "560040",
+    "addr:street": "Chord Road",
+    "addr:suburb": "Vijayanagar",
+    "email": "president@kassia.co.in",
+    "name": "Kassia",
+    "office": "ngo",
+    "phone": "080 – 2335 3250",
+    "website": "https://kassia.co.in/"
+  }
+},
+{
+  "type": "node",
+  "id": 7656923792,
+  "lat": 13.0939851,
+  "lon": 77.5774475,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "lit": "yes",
+    "name": "Sharadhanagar Park Gazebo",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 8188038738,
+  "lat": 12.9912133,
+  "lon": 77.5669044,
+  "tags": {
+    "addr:full": "6th Cross Rd, Gowtham Nagar, Srirampura, Bengaluru, Karnataka",
+    "addr:state": "Karnataka",
+    "amenity": "social_facility",
+    "name": "Aashirvad Nursing Home",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "node",
+  "id": 8427329628,
+  "lat": 13.0352127,
+  "lon": 77.5516758,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 8427345703,
+  "lat": 13.0344526,
+  "lon": 77.5507974,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 9183197254,
+  "lat": 12.8727454,
+  "lon": 77.6538377,
+  "tags": {
+    "addr:city": "Bengaluru",
+    "addr:housenumber": "#270",
+    "addr:postcode": "560100",
+    "addr:street": "1st Main, 6th Cross, Hosa Road",
+    "amenity": "social_facility",
+    "name": "Beena Ville",
+    "operator": "Robin Rajan",
+    "operator:type": "private",
+    "social_facility": "shelter",
+    "social_facility:for": "homeless"
+  }
+},
+{
+  "type": "node",
+  "id": 9654351744,
+  "lat": 12.9644307,
+  "lon": 77.6151761,
+  "tags": {
+    "name": "A Hundred Hands",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 9684732837,
+  "lat": 13.1037734,
+  "lon": 77.5721600,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 9690149040,
+  "lat": 12.9585992,
+  "lon": 77.5123107,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 9690149065,
+  "lat": 12.9595167,
+  "lon": 77.5141601,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 9692962923,
+  "lat": 12.9288721,
+  "lon": 77.5073755,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10032117280,
+  "lat": 12.9558724,
+  "lon": 77.6035687,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10105851165,
+  "lat": 13.0291645,
+  "lon": 77.5432326,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10124399239,
+  "lat": 13.0056580,
+  "lon": 77.5490892,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10183537173,
+  "lat": 12.9808020,
+  "lon": 77.5770619,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10236050045,
+  "lat": 12.9727982,
+  "lon": 77.6054545,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10293686920,
+  "lat": 12.9209967,
+  "lon": 77.5897783,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10297796808,
+  "lat": 12.9797372,
+  "lon": 77.5967995,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10729766614,
+  "lat": 12.9575366,
+  "lon": 77.6160559,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10729766615,
+  "lat": 12.9561669,
+  "lon": 77.6166098,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10753151419,
+  "lat": 13.0340079,
+  "lon": 77.5755465,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 10965458308,
+  "lat": 13.0132336,
+  "lon": 77.5688177,
+  "tags": {
+    "name": "Bengaluru Science & Technology cluster",
+    "office": "ngo",
+    "opening_hours": "Mo-Fr 09:00-17:00",
+    "website": "https://www.bestkc.in/"
+  }
+},
+{
+  "type": "node",
+  "id": 10984741488,
+  "lat": 13.0643337,
+  "lon": 77.6103455,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11025051044,
+  "lat": 12.9982515,
+  "lon": 77.5489122,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11025051045,
+  "lat": 12.9986997,
+  "lon": 77.5487848,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11043324191,
+  "lat": 12.8546631,
+  "lon": 77.5727770,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11061935302,
+  "lat": 13.0425245,
+  "lon": 77.6315780,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11061935368,
+  "lat": 13.0729979,
+  "lon": 77.6228048,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11061935369,
+  "lat": 13.0724446,
+  "lon": 77.6226723,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11061935370,
+  "lat": 13.0724033,
+  "lon": 77.6229893,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11088682665,
+  "lat": 12.9717154,
+  "lon": 77.5924350,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11125643772,
+  "lat": 13.0621534,
+  "lon": 77.5868708,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11125643773,
+  "lat": 13.0592218,
+  "lon": 77.5907848,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11146687745,
+  "lat": 13.0303901,
+  "lon": 77.4840182,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11146739633,
+  "lat": 13.0045434,
+  "lon": 77.5461770,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11153618185,
+  "lat": 12.9035771,
+  "lon": 77.5572860,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11174397946,
+  "lat": 13.0098740,
+  "lon": 77.5572961,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11178123513,
+  "lat": 12.9576037,
+  "lon": 77.5685697,
+  "tags": {
+    "addr:housenumber": "21/1",
+    "addr:street": "SV Narayanaswamy Rao Marg",
+    "check_date": "2023-09-09",
+    "name": "Sree Ramaseva Mandali Foundation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 11187076218,
+  "lat": 12.9560242,
+  "lon": 77.5121337,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11187080719,
+  "lat": 12.9519885,
+  "lon": 77.5191101,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11187080732,
+  "lat": 12.9489589,
+  "lon": 77.5209475,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11187080733,
+  "lat": 12.9519585,
+  "lon": 77.5213672,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11187206116,
+  "lat": 12.9784222,
+  "lon": 77.4942005,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11195729745,
+  "lat": 12.9005351,
+  "lon": 77.5583911,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11278785734,
+  "lat": 12.9641288,
+  "lon": 77.5090183,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11279634239,
+  "lat": 12.9213326,
+  "lon": 77.5604792,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11279634288,
+  "lat": 12.9198739,
+  "lon": 77.5578868,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11299974162,
+  "lat": 12.9081036,
+  "lon": 77.6403808,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11303696484,
+  "lat": 12.9097266,
+  "lon": 77.5824286,
+  "tags": {
+    "amenity": "social_facility",
+    "check_date": "2023-11-01",
+    "name": "Belaku Vatsalya Dhama",
+    "social_facility": "group_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "node",
+  "id": 11303726648,
+  "lat": 12.9081766,
+  "lon": 77.5816164,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11423253052,
+  "lat": 13.0957622,
+  "lon": 77.5768393,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11425006378,
+  "lat": 13.0995712,
+  "lon": 77.5727476,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11425006379,
+  "lat": 13.0987887,
+  "lon": 77.5728817,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11438615446,
+  "lat": 13.0831673,
+  "lon": 77.5631078,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11445618359,
+  "lat": 13.0960586,
+  "lon": 77.5781924,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11472248894,
+  "lat": 13.0638517,
+  "lon": 77.6938534,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11472248977,
+  "lat": 13.0692601,
+  "lon": 77.6953433,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11472249046,
+  "lat": 13.0683430,
+  "lon": 77.6951998,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11481576836,
+  "lat": 12.9137080,
+  "lon": 77.6404877,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11481576859,
+  "lat": 12.9136321,
+  "lon": 77.6428471,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11503759307,
+  "lat": 13.1005521,
+  "lon": 77.5717632,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11513112489,
+  "lat": 13.0082967,
+  "lon": 77.5720912,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11530125134,
+  "lat": 13.0179285,
+  "lon": 77.5623314,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11530125135,
+  "lat": 13.0180059,
+  "lon": 77.5624473,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11530632115,
+  "lat": 13.0704515,
+  "lon": 77.5780101,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11532796972,
+  "lat": 12.9215801,
+  "lon": 77.5804942,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11534655522,
+  "lat": 12.9206516,
+  "lon": 77.6433997,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11536084641,
+  "lat": 12.9592695,
+  "lon": 77.4827920,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11536084642,
+  "lat": 12.9594138,
+  "lon": 77.4808374,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746959,
+  "lat": 12.9190203,
+  "lon": 77.6912114,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746960,
+  "lat": 12.9180909,
+  "lon": 77.6916727,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746961,
+  "lat": 12.9190151,
+  "lon": 77.6903424,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746962,
+  "lat": 12.9182425,
+  "lon": 77.6903598,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746963,
+  "lat": 12.9176870,
+  "lon": 77.6898213,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746964,
+  "lat": 12.9176946,
+  "lon": 77.6895275,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746966,
+  "lat": 12.9164962,
+  "lon": 77.6898810,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746967,
+  "lat": 12.9160857,
+  "lon": 77.6898985,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746968,
+  "lat": 12.9159981,
+  "lon": 77.6900674,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746969,
+  "lat": 12.9162413,
+  "lon": 77.6905958,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746970,
+  "lat": 12.9157393,
+  "lon": 77.6905368,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11543746971,
+  "lat": 12.9155114,
+  "lon": 77.6901058,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11554647404,
+  "lat": 12.9120413,
+  "lon": 77.6954734,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11680844203,
+  "lat": 12.9274226,
+  "lon": 77.5877197,
+  "tags": {
+    "name": "Yuvaka Sangha",
+    "office": "ngo",
+    "website": "https://yuvakasangha.org/"
+  }
+},
+{
+  "type": "node",
+  "id": 11689992008,
+  "lat": 12.8942759,
+  "lon": 77.6457077,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11697222023,
+  "lat": 12.9781138,
+  "lon": 77.5355749,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11697222024,
+  "lat": 12.9763629,
+  "lon": 77.5350264,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11697274519,
+  "lat": 12.9667139,
+  "lon": 77.5266270,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11749458587,
+  "lat": 12.9206425,
+  "lon": 77.5826363,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11749458588,
+  "lat": 12.9205111,
+  "lon": 77.5826477,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11750333399,
+  "lat": 13.0834779,
+  "lon": 77.5572231,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11751057343,
+  "lat": 13.0710799,
+  "lon": 77.5568622,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11752018039,
+  "lat": 13.0814795,
+  "lon": 77.5373612,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11757261839,
+  "lat": 12.9380017,
+  "lon": 77.5184114,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11757291185,
+  "lat": 12.9095419,
+  "lon": 77.5095467,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11789326460,
+  "lat": 12.8988710,
+  "lon": 77.5661990,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11799150110,
+  "lat": 12.9032287,
+  "lon": 77.5628972,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11817854343,
+  "lat": 13.0872716,
+  "lon": 77.5973622,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11817854344,
+  "lat": 13.0878372,
+  "lon": 77.5974601,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11869358381,
+  "lat": 13.0570475,
+  "lon": 77.5711199,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11887029552,
+  "lat": 13.0260038,
+  "lon": 77.5141226,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11887029553,
+  "lat": 13.0256393,
+  "lon": 77.5132576,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11887029554,
+  "lat": 13.0253084,
+  "lon": 77.5124837,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11897220044,
+  "lat": 12.9201718,
+  "lon": 77.6430048,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11934559378,
+  "lat": 12.9483368,
+  "lon": 77.4765944,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11969472096,
+  "lat": 12.9803341,
+  "lon": 77.6281419,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11969539775,
+  "lat": 12.9354729,
+  "lon": 77.5396693,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 11969539776,
+  "lat": 12.9349266,
+  "lon": 77.5395164,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12000103918,
+  "lat": 12.9513388,
+  "lon": 77.5830781,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "no",
+    "lit": "no",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12022141681,
+  "lat": 13.0655657,
+  "lon": 77.5336236,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12245693286,
+  "lat": 13.0607346,
+  "lon": 77.5070422,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12300982646,
+  "lat": 12.8963244,
+  "lon": 77.5250177,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12300982647,
+  "lat": 12.8957727,
+  "lon": 77.5254951,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12300983061,
+  "lat": 12.9017979,
+  "lon": 77.5136545,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12357225897,
+  "lat": 13.1121169,
+  "lon": 77.6168083,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12408679451,
+  "lat": 12.9757536,
+  "lon": 77.6027177,
+  "tags": {
+    "addr:city": "Bengaluru",
+    "addr:floor": "4",
+    "addr:housename": "Cobalt Building",
+    "addr:housenumber": "46/1",
+    "addr:postcode": "560001",
+    "addr:street": "Church Street",
+    "addr:suburb": "Shanthala Nagar",
+    "check_date": "2025-02-15",
+    "contact:instagram": "samagataorg",
+    "email": "foundation@samagata.org",
+    "level": "4",
+    "name": "Samagata Foundation",
+    "office": "ngo",
+    "website": "https://samagata.org/"
+  }
+},
+{
+  "type": "node",
+  "id": 12429052944,
+  "lat": 12.9735908,
+  "lon": 77.5340554,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12429052945,
+  "lat": 12.9722440,
+  "lon": 77.5336806,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12438081305,
+  "lat": 12.9723690,
+  "lon": 77.5366352,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12512478213,
+  "lat": 12.9304289,
+  "lon": 77.5799701,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12525844642,
+  "lat": 12.9742604,
+  "lon": 77.5925248,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12609542988,
+  "lat": 12.9060669,
+  "lon": 77.5836596,
+  "tags": {
+    "check_date": "2025-02-22",
+    "name": "ShikshaLokam",
+    "office": "ngo",
+    "website": "https://shikshalokam.org/"
+  }
+},
+{
+  "type": "node",
+  "id": 12617748991,
+  "lat": 12.9369386,
+  "lon": 77.7504357,
+  "tags": {
+    "addr:housenumber": "308",
+    "addr:street": "Halasahalli Road",
+    "amenity": "social_facility",
+    "check_date": "2025-08-26",
+    "name": "Shivacharana Old Age Home",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "node",
+  "id": 12655645187,
+  "lat": 12.9570770,
+  "lon": 77.5819551,
+  "tags": {
+    "amenity": "social_facility",
+    "brand": "Indira Canteen",
+    "cuisine": "south_indian",
+    "indoor_seating": "bar_table",
+    "level": "0",
+    "name": "Indira Canteen",
+    "opening_hours": "Mo-Su 07:30-09:30,13:00-14:30,19:30-21:30",
+    "operator": "BBMP",
+    "social_facility": "food_bank",
+    "takeaway": "no",
+    "toilets": "no",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 12669418270,
+  "lat": 12.9745503,
+  "lon": 77.5926389,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "description": "Can fit 30 people comfortably. Bench around the perimeter",
+    "shelter_type": "gazebo",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 12762523148,
+  "lat": 12.9258574,
+  "lon": 77.4924751,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 12794021964,
+  "lat": 13.0721736,
+  "lon": 77.5575812,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12794021988,
+  "lat": 13.0714006,
+  "lon": 77.5566684,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12794026309,
+  "lat": 13.0662848,
+  "lon": 77.5605845,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12794026312,
+  "lat": 13.0685994,
+  "lon": 77.5636901,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12809319285,
+  "lat": 13.0101007,
+  "lon": 77.5674623,
+  "tags": {
+    "name": "BWSSB Employee's Association",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 12860399933,
+  "lat": 12.9689367,
+  "lon": 77.7496425,
+  "tags": {
+    "amenity": "social_facility",
+    "check_date": "2026-02-05",
+    "name": "Pushpa Nursing Home",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "node",
+  "id": 12860980654,
+  "lat": 12.9648136,
+  "lon": 77.7485341,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 12912564377,
+  "lat": 12.9247337,
+  "lon": 77.5799421,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12941957158,
+  "lat": 13.0235297,
+  "lon": 77.6457606,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12952263230,
+  "lat": 13.0221180,
+  "lon": 77.6488540,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12956759781,
+  "lat": 12.9413336,
+  "lon": 77.4829497,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 12966576918,
+  "lat": 12.9514233,
+  "lon": 77.5830916,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13073503059,
+  "lat": 12.9194397,
+  "lon": 77.6098966,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13074488699,
+  "lat": 12.9189825,
+  "lon": 77.6098607,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13075368678,
+  "lat": 12.9115179,
+  "lon": 77.6415002,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "bin": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 13110965595,
+  "lat": 12.9200800,
+  "lon": 77.5795242,
+  "tags": {
+    "name": "Rainmatter Foundation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127367968,
+  "lat": 12.9296878,
+  "lon": 77.5209957,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127367969,
+  "lat": 12.9295440,
+  "lon": 77.5213525,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127368034,
+  "lat": 12.9285532,
+  "lon": 77.5161999,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127368035,
+  "lat": 12.9286813,
+  "lon": 77.5165969,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127368064,
+  "lat": 12.9290983,
+  "lon": 77.5178924,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127368065,
+  "lat": 12.9295087,
+  "lon": 77.5175303,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13127368066,
+  "lat": 12.9298642,
+  "lon": 77.5183216,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13251172739,
+  "lat": 12.8981376,
+  "lon": 77.7703366,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13251268817,
+  "lat": 12.9769205,
+  "lon": 77.6732970,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13251268818,
+  "lat": 12.9769298,
+  "lon": 77.6735807,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13261840379,
+  "lat": 12.9031431,
+  "lon": 77.5964187,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13275766738,
+  "lat": 12.9779204,
+  "lon": 77.6627290,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13324226367,
+  "lat": 12.9329544,
+  "lon": 77.6887538,
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "node",
+  "id": 13341789489,
+  "lat": 12.9510827,
+  "lon": 77.5942784,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "name": "Gaze P",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13341800392,
+  "lat": 12.9512697,
+  "lon": 77.5945254,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13341812877,
+  "lat": 12.9512130,
+  "lon": 77.5941732,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "name": "Gazebo",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13389920262,
+  "lat": 12.9980328,
+  "lon": 77.5418303,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13390022802,
+  "lat": 12.9974260,
+  "lon": 77.5410596,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13390678483,
+  "lat": 12.9684593,
+  "lon": 77.6371446,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13417380223,
+  "lat": 13.0121627,
+  "lon": 77.5748907,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13482065888,
+  "lat": 13.0241569,
+  "lon": 77.5861687,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13578749468,
+  "lat": 12.9808327,
+  "lon": 77.6374526,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13944445757,
+  "lat": 12.9918575,
+  "lon": 77.5781174,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "node",
+  "id": 13967838018,
+  "lat": 12.9864393,
+  "lon": 77.5384424,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "lit": "no",
+    "lockable": "no",
+    "shelter_type": "gazebo",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 13967838019,
+  "lat": 12.9861257,
+  "lon": 77.5383434,
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "lit": "no",
+    "lockable": "no",
+    "shelter_type": "gazebo",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "node",
+  "id": 13974859280,
+  "lat": 12.9116204,
+  "lon": 77.5640184,
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 35927357,
+  "center": {
+    "lat": 13.0469685,
+    "lon": 77.6439150
+  },
+  "tags": {
+    "FIXME": "shape",
+    "amenity": "social_facility",
+    "name": "Sisters of St Charles",
+    "social_facility": "group_home"
+  }
+},
+{
+  "type": "way",
+  "id": 130631233,
+  "center": {
+    "lat": 12.9729288,
+    "lon": 77.7473121
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "email": "chinc.blr@gmail.com",
+    "name": "Chesire Homes India",
+    "opening_hours": "Mo-Fr 10:00-17:00; Sa 10:00-13:00",
+    "phone": "+91 9047011145",
+    "social_facility": "day_care",
+    "social_facility:for": "disabled"
+  }
+},
+{
+  "type": "way",
+  "id": 135266058,
+  "center": {
+    "lat": 12.9844576,
+    "lon": 77.6464785
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "St. Michael's Home",
+    "social_facility": "shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 181695454,
+  "center": {
+    "lat": 12.9721529,
+    "lon": 77.7171183
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695464,
+  "center": {
+    "lat": 12.9718685,
+    "lon": 77.7168139
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695473,
+  "center": {
+    "lat": 12.9721931,
+    "lon": 77.7170043
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695477,
+  "center": {
+    "lat": 12.9719814,
+    "lon": 77.7168551
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695481,
+  "center": {
+    "lat": 12.9718296,
+    "lon": 77.7169308
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695485,
+  "center": {
+    "lat": 12.9722213,
+    "lon": 77.7169005
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695498,
+  "center": {
+    "lat": 12.9719352,
+    "lon": 77.7170671
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695506,
+  "center": {
+    "lat": 12.9720368,
+    "lon": 77.7171264
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 181695507,
+  "center": {
+    "lat": 12.9718246,
+    "lon": 77.7170749
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 197115677,
+  "center": {
+    "lat": 12.9068040,
+    "lon": 77.5365724
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "picnic_shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 202063465,
+  "center": {
+    "lat": 12.9065498,
+    "lon": 77.5417857
+  },
+  "tags": {
+    "alt_name": "Krishnakamala Cultural Centre",
+    "amenity": "social_facility",
+    "building": "yes",
+    "name": "Ashraya Vrudhasharama",
+    "name:kn": "ಆಶ್ರಯ ವೃದ್ಧಾಶ್ರಮ",
+    "social_facility": "group_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 291266074,
+  "center": {
+    "lat": 12.9880279,
+    "lon": 77.5803274
+  },
+  "tags": {
+    "amenity": "community_centre",
+    "landuse": "commercial",
+    "name": "Gandhi Bhavan",
+    "name:etymology:wikidata": "Q1001",
+    "name:kn": "ಗಾಂಧಿ ಭವನ",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 311623046,
+  "center": {
+    "lat": 13.0033402,
+    "lon": 77.6171322
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Stephen's Home for the Aged",
+    "operator": "St. John's Church",
+    "operator:type": "religious",
+    "roof:colour": "#c66e4e",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 328996274,
+  "center": {
+    "lat": 12.9731218,
+    "lon": 77.5986467
+  },
+  "tags": {
+    "addr:city": "Bangalore",
+    "addr:housenumber": "26",
+    "addr:postcode": "560001",
+    "addr:street": "Lavelle Road",
+    "landuse": "commercial",
+    "name": "The Churches' Council for Child and Youth Care",
+    "office": "ngo",
+    "opening_hours": "24/7",
+    "smoking": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 343680931,
+  "center": {
+    "lat": 12.9705397,
+    "lon": 77.6436174
+  },
+  "tags": {
+    "addr:housenumber": "599",
+    "addr:street": "12th Main Road",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Arghyam - Safe sustainable water for all",
+    "office": "ngo",
+    "roof:shape": "flat"
+  }
+},
+{
+  "type": "way",
+  "id": 346019709,
+  "center": {
+    "lat": 13.0046459,
+    "lon": 77.6195021
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "building": "yes",
+    "name": "Missionaries of Charity - Nirmala Shishubhavan",
+    "opening_hours": "08:00-12:00,15:00-18:00; Th off",
+    "roof:colour": "gray"
+  }
+},
+{
+  "type": "way",
+  "id": 347546337,
+  "center": {
+    "lat": 12.9245964,
+    "lon": 77.5819762
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 349699408,
+  "center": {
+    "lat": 13.0029446,
+    "lon": 77.4854948
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 349699409,
+  "center": {
+    "lat": 13.0024085,
+    "lon": 77.4853267
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 349699410,
+  "center": {
+    "lat": 13.0023416,
+    "lon": 77.4856115
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 351409577,
+  "center": {
+    "lat": 12.9846884,
+    "lon": 77.4890453
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 366920115,
+  "center": {
+    "lat": 13.1069023,
+    "lon": 77.5732638
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 377171223,
+  "center": {
+    "lat": 12.9663909,
+    "lon": 77.5954955
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "building": "yes",
+    "name": "Eventide Home",
+    "social_facility": "group_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 440386372,
+  "center": {
+    "lat": 12.9665675,
+    "lon": 77.5979751
+  },
+  "tags": {
+    "amenity": "shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 460225728,
+  "center": {
+    "lat": 12.9599956,
+    "lon": 77.6498640
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "building": "apartments",
+    "name": "Cheshire Homes",
+    "social_facility": "group_home"
+  }
+},
+{
+  "type": "way",
+  "id": 575099749,
+  "center": {
+    "lat": 12.9865689,
+    "lon": 77.6444392
+  },
+  "tags": {
+    "landuse": "commercial",
+    "name": "WHO India",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 601264128,
+  "center": {
+    "lat": 12.9701421,
+    "lon": 77.6506240
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "gazebo",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 601264129,
+  "center": {
+    "lat": 12.9709752,
+    "lon": 77.6506155
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "gazebo",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 672645238,
+  "center": {
+    "lat": 12.9042087,
+    "lon": 77.6030217
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "lit": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 687173212,
+  "center": {
+    "lat": 13.0288442,
+    "lon": 77.6370308
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "landuse": "residential",
+    "name": "Little Sisters of Poor",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 691137056,
+  "center": {
+    "lat": 13.0090674,
+    "lon": 77.5526627
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 691137058,
+  "center": {
+    "lat": 13.0089522,
+    "lon": 77.5527112
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 691137802,
+  "center": {
+    "lat": 12.9339120,
+    "lon": 77.5341528
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 691215109,
+  "center": {
+    "lat": 12.8712514,
+    "lon": 77.6621796
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 691215110,
+  "center": {
+    "lat": 12.8712397,
+    "lon": 77.6622817
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 761064080,
+  "center": {
+    "lat": 12.9711790,
+    "lon": 77.6438902
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 761131865,
+  "center": {
+    "lat": 12.9749445,
+    "lon": 77.6436365
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 775448746,
+  "center": {
+    "lat": 12.9947733,
+    "lon": 77.6084642
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 781182581,
+  "center": {
+    "lat": 12.9606362,
+    "lon": 77.6057975
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Society of the Little Sisters of the Poor",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 803794427,
+  "center": {
+    "lat": 12.8877876,
+    "lon": 77.4523117
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 926165652,
+  "center": {
+    "lat": 13.0024873,
+    "lon": 77.6216594
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "building": "residential",
+    "building:colour": "gray",
+    "building:levels": "5",
+    "building:material": "stone",
+    "roof:colour": "white",
+    "social_facility": "assisted_living"
+  }
+},
+{
+  "type": "way",
+  "id": 991661063,
+  "center": {
+    "lat": 12.9799127,
+    "lon": 77.5967802
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 991661064,
+  "center": {
+    "lat": 12.9751259,
+    "lon": 77.5920977
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1054822216,
+  "center": {
+    "lat": 12.9786839,
+    "lon": 77.5278579
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1064408610,
+  "center": {
+    "lat": 12.9843725,
+    "lon": 77.5171635
+  },
+  "tags": {
+    "alt_name": "Sumanahalli Society",
+    "amenity": "social_facility",
+    "full_name": "Sumanahalli Leprosy Rehabilitation Training Centre",
+    "healthcare": "rehabilitation",
+    "healthcare:speciality": "leprosy",
+    "name": "Sumanahalli",
+    "social_facility": "nursing_home",
+    "website": "https://sumanahalli.org/"
+  }
+},
+{
+  "type": "way",
+  "id": 1064898147,
+  "center": {
+    "lat": 12.9844247,
+    "lon": 77.5916590
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1087008972,
+  "center": {
+    "lat": 12.9835444,
+    "lon": 77.6234989
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "brand": "Red Cross",
+    "name": "Indian Red Cross Society",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 1099659542,
+  "center": {
+    "lat": 12.9110130,
+    "lon": 77.6411318
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1099659544,
+  "center": {
+    "lat": 12.9111180,
+    "lon": 77.6402540
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1125144623,
+  "center": {
+    "lat": 12.9558173,
+    "lon": 77.5924030
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1157456785,
+  "center": {
+    "lat": 12.9869842,
+    "lon": 77.7459111
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1182951665,
+  "center": {
+    "lat": 13.0950094,
+    "lon": 77.6012410
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456534,
+  "center": {
+    "lat": 13.1156869,
+    "lon": 77.5976574
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456535,
+  "center": {
+    "lat": 13.1196619,
+    "lon": 77.5867606
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456536,
+  "center": {
+    "lat": 13.1170333,
+    "lon": 77.5934445
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456537,
+  "center": {
+    "lat": 13.1123547,
+    "lon": 77.5996279
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456538,
+  "center": {
+    "lat": 13.1056291,
+    "lon": 77.5956324
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456542,
+  "center": {
+    "lat": 13.1091002,
+    "lon": 77.5939958
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1191456546,
+  "center": {
+    "lat": 13.1128294,
+    "lon": 77.5893182
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1199401164,
+  "center": {
+    "lat": 12.8714885,
+    "lon": 77.5907706
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Holy Spirit Old Age Home",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1199410766,
+  "center": {
+    "lat": 12.8490868,
+    "lon": 77.5973361
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "St. Joseph Elderly Home",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1206360030,
+  "center": {
+    "lat": 12.9582570,
+    "lon": 77.5693120
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "BOSCO Mane",
+    "social_facility": "group_home",
+    "social_facility:for": "child",
+    "website": "https://boscoban.org/our-centres/bosco-mane/"
+  }
+},
+{
+  "type": "way",
+  "id": 1209738954,
+  "center": {
+    "lat": 12.9844450,
+    "lon": 77.5897752
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "lit": "no",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1214107287,
+  "center": {
+    "lat": 13.0100850,
+    "lon": 77.5752071
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1214107288,
+  "center": {
+    "lat": 13.0091110,
+    "lon": 77.5729313
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1214107309,
+  "center": {
+    "lat": 13.0109002,
+    "lon": 77.5728868
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1219039451,
+  "center": {
+    "lat": 12.9403315,
+    "lon": 77.5950099
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "roof",
+    "building:prefabricated": "yes",
+    "name": "Waiting Hall",
+    "roof:shape": "gabled",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1219313044,
+  "center": {
+    "lat": 12.9704581,
+    "lon": 77.7210531
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "roof",
+    "shelter_type": "gazebo",
+    "wheelchair": "no"
+  }
+},
+{
+  "type": "way",
+  "id": 1237037092,
+  "center": {
+    "lat": 12.9715796,
+    "lon": 77.7080695
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "picnic_shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 1237551406,
+  "center": {
+    "lat": 13.0131322,
+    "lon": 77.6267009
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "United Christian Fellowship",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior",
+    "website": "https://www.ucfhome.org/",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "way",
+  "id": 1244111887,
+  "center": {
+    "lat": 12.9657978,
+    "lon": 77.6370407
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1246801080,
+  "center": {
+    "lat": 12.8900594,
+    "lon": 77.4598527
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Sneha Jyoti Old Age Home",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1248997196,
+  "center": {
+    "lat": 12.9622105,
+    "lon": 77.7083502
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1252339219,
+  "center": {
+    "lat": 12.9215585,
+    "lon": 77.6441635
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1252516688,
+  "center": {
+    "lat": 12.9877746,
+    "lon": 77.7121169
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "roof",
+    "lit": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1254626816,
+  "center": {
+    "lat": 12.9109742,
+    "lon": 77.6398816
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1270680418,
+  "center": {
+    "lat": 13.0028282,
+    "lon": 77.5517083
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1272669593,
+  "center": {
+    "lat": 12.9104735,
+    "lon": 77.6414832
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1273338982,
+  "center": {
+    "lat": 12.9168223,
+    "lon": 77.6900114
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1276833549,
+  "center": {
+    "lat": 12.9814746,
+    "lon": 77.5945941
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1295718900,
+  "center": {
+    "lat": 12.9591157,
+    "lon": 77.7446056
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Athulya Senior Care Services",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior",
+    "website": "https://www.athulyaseniorcare.com/whitefield.php",
+    "wheelchair": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1308720293,
+  "center": {
+    "lat": 12.9761000,
+    "lon": 77.6046506
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "no",
+    "bin": "no",
+    "building": "yes",
+    "layer": "2",
+    "shelter_type": "pergola"
+  }
+},
+{
+  "type": "way",
+  "id": 1313964266,
+  "center": {
+    "lat": 12.9449039,
+    "lon": 77.5966126
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1318351693,
+  "center": {
+    "lat": 12.9190637,
+    "lon": 77.6387847
+  },
+  "tags": {
+    "amenity": "shelter",
+    "bench": "yes",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1337119994,
+  "center": {
+    "lat": 12.9705818,
+    "lon": 77.6507219
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "gazebo",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1342998608,
+  "center": {
+    "lat": 12.9920403,
+    "lon": 77.5814166
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "roof",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1346915452,
+  "center": {
+    "lat": 12.9149466,
+    "lon": 77.5984858
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1348168078,
+  "center": {
+    "lat": 12.9950220,
+    "lon": 77.6042931
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Wesley Old Age Home",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1353053248,
+  "center": {
+    "lat": 13.0889656,
+    "lon": 77.6560724
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Santhawana Hospice",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1354211496,
+  "center": {
+    "lat": 13.0739713,
+    "lon": 77.6570917
+  },
+  "tags": {
+    "name": "Accept Society",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 1356191543,
+  "center": {
+    "lat": 12.9970053,
+    "lon": 77.6683967
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1363505242,
+  "center": {
+    "lat": 13.0149962,
+    "lon": 77.6297184
+  },
+  "tags": {
+    "name": "India Campus Crusade for Christ",
+    "office": "ngo",
+    "wheelchair": "limited"
+  }
+},
+{
+  "type": "way",
+  "id": 1366656628,
+  "center": {
+    "lat": 13.0259784,
+    "lon": 77.6363999
+  },
+  "tags": {
+    "landuse": "commercial",
+    "name": "Cosmic Culture Research Centre",
+    "note": "Under litigation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 1368284554,
+  "center": {
+    "lat": 12.9713752,
+    "lon": 77.5922492
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1377263254,
+  "center": {
+    "lat": 12.9217851,
+    "lon": 77.7309780
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Old age home",
+    "social_facility": "nursing_home",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1378353242,
+  "center": {
+    "lat": 12.9133971,
+    "lon": 77.4850732
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes"
+  }
+},
+{
+  "type": "way",
+  "id": 1378473536,
+  "center": {
+    "lat": 12.9802557,
+    "lon": 77.5754141
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "name": "Platform"
+  }
+},
+{
+  "type": "way",
+  "id": 1381026237,
+  "center": {
+    "lat": 13.0803046,
+    "lon": 77.6165856
+  },
+  "tags": {
+    "landuse": "orchard",
+    "name": "Satya Foundation",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 1381888174,
+  "center": {
+    "lat": 13.0633457,
+    "lon": 77.5676690
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1381888177,
+  "center": {
+    "lat": 13.0607371,
+    "lon": 77.5649235
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1390079390,
+  "center": {
+    "lat": 12.9813946,
+    "lon": 77.5165761
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Sumanahalli Skill Development Center",
+    "social_facility": "nursing_home",
+    "website": "https://sumanahalli.org/"
+  }
+},
+{
+  "type": "way",
+  "id": 1390079392,
+  "center": {
+    "lat": 12.9822558,
+    "lon": 77.5168310
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Sumanahalli Anugraha",
+    "social_facility": "nursing_home",
+    "website": "https://sumanahalli.org/"
+  }
+},
+{
+  "type": "way",
+  "id": 1390079395,
+  "center": {
+    "lat": 12.9814926,
+    "lon": 77.5179695
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "healthcare": "counselling",
+    "name": "Sumanahalli Support Community Care Center"
+  }
+},
+{
+  "type": "way",
+  "id": 1391367684,
+  "center": {
+    "lat": 12.8808818,
+    "lon": 77.5901699
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Snehasadan Orphanage",
+    "social_facility": "shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 1409123687,
+  "center": {
+    "lat": 12.9319899,
+    "lon": 77.6124959
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Elizabeth Care home",
+    "social_facility": "assisted_living",
+    "social_facility:for": "senior"
+  }
+},
+{
+  "type": "way",
+  "id": 1409400944,
+  "center": {
+    "lat": 13.1088481,
+    "lon": 77.5160647
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "building": "yes",
+    "name": "Elizabeth Mane Aksahaparavakal",
+    "social_facility": "assisted_living"
+  }
+},
+{
+  "type": "way",
+  "id": 1413520245,
+  "center": {
+    "lat": 12.9631615,
+    "lon": 77.5054283
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1414057816,
+  "center": {
+    "lat": 13.0011729,
+    "lon": 77.6241482
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "yes",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1418253577,
+  "center": {
+    "lat": 13.0763327,
+    "lon": 77.6056416
+  },
+  "tags": {
+    "full_name": "Children's LoveCastles Trust",
+    "landuse": "orchard",
+    "name": "CLT India",
+    "office": "ngo",
+    "start_date": "1997",
+    "website": "https://cltindia.org",
+    "wikipedia": "en:Children's LoveCastles Trust"
+  }
+},
+{
+  "type": "way",
+  "id": 1421748852,
+  "center": {
+    "lat": 12.8996782,
+    "lon": 77.7147733
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Suryodaya Boys Centre",
+    "social_facility": "shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 1422502689,
+  "center": {
+    "lat": 12.8555674,
+    "lon": 77.6629008
+  },
+  "tags": {
+    "amenity": "shelter",
+    "building": "roof",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1449587798,
+  "center": {
+    "lat": 12.9638483,
+    "lon": 77.6782345
+  },
+  "tags": {
+    "landuse": "commercial",
+    "name": "Bharathiya Grameen Mahila Sangh",
+    "name:kn": "ಭಾರತೀಯ ಗ್ರಾಮಿನ ಮಹೀಳ ಸೆಂಘ",
+    "office": "ngo",
+    "short_name": "BGMS"
+  }
+},
+{
+  "type": "way",
+  "id": 1452541767,
+  "center": {
+    "lat": 12.9168215,
+    "lon": 77.7163362
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "MSMI Anugraha Children's Home",
+    "social_facility": "shelter"
+  }
+},
+{
+  "type": "way",
+  "id": 1452541777,
+  "center": {
+    "lat": 12.9111575,
+    "lon": 77.7106058
+  },
+  "tags": {
+    "amenity": "social_centre",
+    "office": "ngo"
+  }
+},
+{
+  "type": "way",
+  "id": 1460212276,
+  "center": {
+    "lat": 12.9615511,
+    "lon": 77.6396477
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1460212281,
+  "center": {
+    "lat": 12.9610823,
+    "lon": 77.6409951
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1460212282,
+  "center": {
+    "lat": 12.9610245,
+    "lon": 77.6407427
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1460784465,
+  "center": {
+    "lat": 13.0692707,
+    "lon": 77.6654748
+  },
+  "tags": {
+    "amenity": "social_facility",
+    "name": "Liza's Home",
+    "social_facility": "nursing_home",
+    "social_facility:for": "women",
+    "website": "https://lizashome.org/"
+  }
+},
+{
+  "type": "way",
+  "id": 1486784388,
+  "center": {
+    "lat": 12.9769025,
+    "lon": 77.5122312
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1496035701,
+  "center": {
+    "lat": 12.9599387,
+    "lon": 77.7067381
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1499398943,
+  "center": {
+    "lat": 12.8742623,
+    "lon": 77.5810299
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1501691898,
+  "center": {
+    "lat": 12.8702585,
+    "lon": 77.5771258
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1506030430,
+  "center": {
+    "lat": 12.8992612,
+    "lon": 77.6471940
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+},
+{
+  "type": "way",
+  "id": 1528352427,
+  "center": {
+    "lat": 12.9233845,
+    "lon": 77.6879448
+  },
+  "tags": {
+    "amenity": "shelter",
+    "shelter_type": "gazebo"
+  }
+}
+
+  ]
+}
