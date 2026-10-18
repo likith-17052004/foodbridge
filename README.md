@@ -1,23 +1,44 @@
 # FoodBridge: AI surplus food matching (Bengaluru)
 
-A restaurant photographs leftover food. Gemini identifies the dish, servings and safe hours. The offer then
-goes to the NGO best able to collect and serve it before it spoils.
+A restaurant photographs its leftover food. Gemini identifies the dish, veg/non-veg, risks and how long it stays
+safe. FoodBridge then offers it to the NGO best able to collect and serve it before it spoils.
+
+## Live demo
+Hosted on Google Cloud Run: **[https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app)**
+
+| Page | Link | What it shows |
+|---|---|---|
+| Control room | [/control](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/control) | The demo screen: press **Play 10 PM rush** to watch real dish photos analysed by Gemini, matched and offered to NGOs live |
+| Donate | [/](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/) | Restaurant app: photo → Gemini analysis → confirm → live matching table |
+| NGO inbox | [/ngo](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/ngo) | NGO app: incoming offers with countdown, accept / decline, pickup and delivery |
+| Forecast | [/forecast](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/forecast) | Tonight's expected surplus by area and hour, NGO standby plan, Gemini dispatch briefing |
+| Impact | [/dashboard](https://foodbridge-ai-builder-cup-524673786174.asia-south1.run.app/dashboard) | Meals delivered, kg diverted, CO₂e avoided, share accepted within the safe window (from BigQuery) |
+
+The service scales to zero when idle, so the first page load can take a few seconds.
+
+## How it works
+1. **Upload**: the donor photographs the food; the photo is stored in Cloud Storage.
+2. **Analyse**: Gemini 3.6 Flash on Vertex AI returns the dish, veg/egg/non-veg, risk factors, servings and safe
+   hours. The kitchen confirms the quantity, cooking time and storage.
+3. **Safety**: the safe window combines Gemini's estimate with USDA/FSSAI holding rules. Food past its window is
+   blocked.
+4. **Match**: the Routes API gives traffic-aware travel times. NGOs that can't receive the food in time are filtered out, and
+   the rest are ranked by need (45%), how much of the food they can use (30%) and safety margin (25%).
+5. **Offer**: the top NGO gets the offer; if it doesn't accept within 10 minutes, it moves to the next one. Every
+   event is published to Pub/Sub and lands in BigQuery.
+6. **Measure**: completed pickups stream into BigQuery and drive the impact dashboard and the surplus forecast.
 
 ## Run locally
 ```
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env          # Vertex AI: gcloud auth application-default login
-.venv/bin/python scripts/simulate_history.py --days 45 --reset   # dashboard history
-.venv/bin/uvicorn app.main:app --reload
+cp .env.example .env                      # Gemini on Vertex AI; see the comments in the file
+gcloud auth application-default login     # local credentials for Vertex AI
+.venv/bin/python -m app.bootstrap         # creates the local database with 45 nights of simulated history
+.venv/bin/uvicorn app.main:app --reload   # serves the same pages as the live demo, on port 8000
 ```
-- Donor app: http://localhost:8000
-- NGO inbox: http://localhost:8000/ngo
-- **Control room** (demo screen for judges): http://localhost:8000/control. Press "Play 10 PM rush".
-- Surplus forecast: http://localhost:8000/forecast
-- Impact dashboard: http://localhost:8000/dashboard
 
 ## AI quality (measured)
-`scripts/eval_vision.py --per-class 3`: 240 photos covering 80 Indian dishes (Indian Food Images dataset), `google/gemini-3.6-flash`:
+`scripts/eval_vision.py --per-class 3`: 240 photos covering 80 Indian dishes (Indian Food Images dataset), Gemini 3.6 Flash:
 
 | Metric | Result |
 |---|---|
@@ -123,17 +144,22 @@ Each service is optional. Without its env var (`GCS_BUCKET`, `PUBSUB_TOPIC`, `BQ
 
 ## Cost guardrails (personal project with no budget)
 - Cloud Run scales to zero with max 1 instance and request-based CPU. Housekeeping runs on each request.
-- Gemini is capped at `GEMINI_DAILY_LIMIT` (150) calls per day for the whole app. Uploads are limited to 20 per IP per hour, and the demo rush to 3 per IP per hour (max 8 dishes each).
-- Routes API is capped at `ROUTES_DAILY_LIMIT` (150) elements per day, about 4.5k per month, inside the free allowance.
+- Gemini is capped at `GEMINI_DAILY_LIMIT` calls per day for the whole app (60 in production, about ₹15/day worst case). Uploads are limited to 20 per IP per hour, and the demo rush to 3 per IP per hour (max 8 dishes each).
+- Routes API is capped at `ROUTES_DAILY_LIMIT` (150) elements per day, about 4.5k per month, inside the free allowance. Each matched donation uses about 20 (one per NGO).
 - BigQuery: one cached dashboard query every 5 minutes or less, and history is seeded with a free load job.
 - Artifact Registry keeps the last 3 images. A ₹300/month budget alert covers the project.
 
-## Local stand-ins for cloud services (swapped in later)
-| Local | Cloud |
-|---|---|
-| `data/uploads/` | Cloud Storage |
-| Gemini on Vertex AI using your gcloud credentials | Gemini on Vertex AI using the Cloud Run service account |
-| `events` table plus a 3-second tick loop | Pub/Sub plus a scheduler |
-| SQLite `pickups` table | BigQuery |
-| Distance-based travel estimate | Routes API |
-| Weekday-average forecast | BigQuery ML / Vertex AI forecasting |
+## Running without Google Cloud
+Every Google service is optional. When its setting is empty, the app falls back to a local version, so it also runs
+fully offline (Gemini then returns a clearly-labelled demo result).
+
+| Setting | With Google Cloud | Without it |
+|---|---|---|
+| `VISION_PROVIDER=vertex` | Gemini on Vertex AI | `demo` result (or `gemini` with `GEMINI_API_KEY`) |
+| `GCS_BUCKET` | Photos and state snapshots in Cloud Storage | Photos in `data/uploads/`, state only in the local SQLite file |
+| `PUBSUB_TOPIC` | Events published to Pub/Sub, then BigQuery | Events only in the local `events` table (which also drives the live UI) |
+| `BQ_DATASET` | Pickups streamed to BigQuery; dashboard reads from it | Dashboard reads the local `pickups` table |
+| `ROUTES_API=on` | Routes API travel times | Distance-based estimate |
+
+The forecast is a statistical model (weekday-aware averages); it would move to BigQuery ML / Vertex AI forecasting
+once real pickups accumulate.
