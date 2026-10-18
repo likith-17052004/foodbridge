@@ -7,36 +7,82 @@ import json
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse
+import time
+
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import config
-from .services import donations, forecast, impact, offers, safety, scenario, vision
+from .services import cloud, donations, forecast, guard, impact, offers, persist, safety, scenario, vision
 from .store import DONORS, NGOS, iso, now, one, query
 
 STATIC = config.ROOT / "app/static"
+
+
+_last_tick = {"at": 0.0}
+
+
+def housekeeping(force=False):
+    """Expire offers, block spoiled food, snapshot state. Runs from a loop and on requests, because
+    Cloud Run (request-based billing) only gives the container CPU while a request is in flight."""
+    if not force and time.time() - _last_tick["at"] < 2:
+        return
+    _last_tick["at"] = time.time()
+    try:
+        offers.tick()
+        persist.snapshot()
+    except Exception as e:  # never break a request over housekeeping
+        print("housekeeping error:", e)
 
 
 @asynccontextmanager
 async def lifespan(_):
     async def loop():
         while True:
-            try:
-                offers.tick()
-            except Exception as e:  # keep the loop alive
-                print("tick error:", e)
+            await asyncio.to_thread(housekeeping)
             await asyncio.sleep(3)
     task = asyncio.create_task(loop())
     yield
     task.cancel()
+    persist.snapshot(force=True)  # Cloud Run sends SIGTERM before scaling to zero
 
 
 app = FastAPI(title="FoodBridge", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=STATIC), name="static")
 config.UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
-app.mount("/uploads", StaticFiles(directory=config.UPLOAD_DIR), name="uploads")
+
+
+@app.middleware("http")
+async def tick_on_request(request: Request, call_next):
+    if request.url.path.startswith("/api/"):
+        await asyncio.to_thread(housekeeping)
+    return await call_next(request)
+
+
+@app.exception_handler(guard.LimitReached)
+async def limit_reached(_, exc):
+    return JSONResponse(status_code=429, content={"detail": str(exc)})
+
+
+def client_ip(request: Request):
+    fwd = request.headers.get("x-forwarded-for", "")
+    return fwd.split(",")[0].strip() or (request.client.host if request.client else "unknown")
+
+
+@app.get("/uploads/{name}")
+def get_upload(name: str):
+    """Photos: local cache first, then Cloud Storage (the bucket stays private)."""
+    if "/" in name or ".." in name:
+        raise HTTPException(404)
+    local = config.UPLOAD_DIR / name
+    if not local.exists():
+        data = cloud.gcs_download(f"photos/{name}")
+        if data is None:
+            raise HTTPException(404)
+        local.write_bytes(data)
+    return FileResponse(local, headers={"Cache-Control": "public, max-age=86400"})
 
 
 @app.get("/")
@@ -68,7 +114,10 @@ def forecast_page():
 @app.get("/api/config")
 def get_config():
     return {"gemini": vision.gemini_enabled(), "model": vision.model_label(),
-            "offer_timeout_seconds": config.OFFER_TIMEOUT_SECONDS, "serve_buffer_min": config.SERVE_BUFFER_MIN}
+            "offer_timeout_seconds": config.OFFER_TIMEOUT_SECONDS, "serve_buffer_min": config.SERVE_BUFFER_MIN,
+            "cloud": {"storage": cloud.gcs_enabled(), "pubsub": bool(config.PUBSUB_TOPIC),
+                      "bigquery": cloud.bq_enabled(), "routes_api": config.ROUTES_API},
+            "limits": guard.status()}
 
 
 @app.get("/api/donors")
@@ -83,15 +132,18 @@ def list_ngos():
 
 # ---------------- donor flow ----------------
 @app.post("/api/donations")
-async def create_donation(donor_id: str = Form(...), photo: UploadFile = File(...)):
+async def create_donation(request: Request, donor_id: str = Form(...), photo: UploadFile = File(...)):
     if donor_id not in DONORS:
         raise HTTPException(404, "Unknown donor")
+    guard.ip_take(client_ip(request), "upload", config.UPLOADS_PER_IP_HOUR)
     data = await photo.read()
     if len(data) > 12 * 1024 * 1024:
         raise HTTPException(413, "Photo too large (max 12 MB)")
     try:
         return await asyncio.to_thread(donations.create, donor_id, data, photo.content_type or "image/jpeg",
                                        photo.filename or "photo.jpg")
+    except guard.LimitReached:
+        raise
     except Exception as e:
         raise HTTPException(502, f"Food analysis failed: {e}")
 
@@ -200,11 +252,16 @@ class ScenarioStart(BaseModel):
 
 
 @app.post("/api/scenario/start")
-async def scenario_start(body: ScenarioStart):
+async def scenario_start(request: Request, body: ScenarioStart):
     if not vision.gemini_enabled():
         raise HTTPException(409, "Configure a Gemini provider first (see .env.example)")
-    return scenario.start(max(1, min(body.donations, 15)), body.interval_s, max(10, body.offer_timeout_s),
-                          body.auto_ngo)
+    n = max(1, min(body.donations, 8))
+    if scenario.STATE["running"]:
+        return scenario.status()
+    if guard.remaining("gemini_calls", config.GEMINI_DAILY_LIMIT) < n:
+        raise guard.LimitReached("Daily AI budget nearly used up - the demo rush is paused until midnight IST")
+    guard.ip_take(client_ip(request), "rush", config.RUSHES_PER_IP_HOUR)
+    return scenario.start(n, body.interval_s, max(10, body.offer_timeout_s), body.auto_ngo)
 
 
 @app.post("/api/scenario/{action}")

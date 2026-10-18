@@ -13,6 +13,7 @@ from . import config
 
 _lock = threading.Lock()
 _conn = None
+DIRTY = {"since": None}  # set on writes; persist.py snapshots the DB to Cloud Storage
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS donations (
@@ -34,6 +35,9 @@ CREATE TABLE IF NOT EXISTS pickups (
   servings INTEGER, kg REAL, co2e_kg REAL,
   offered_at TEXT, accepted_at TEXT, picked_up_at TEXT, delivered_at TEXT, safe_until TEXT,
   within_window INTEGER, offers_made INTEGER, distance_km REAL, simulated INTEGER DEFAULT 0
+);
+CREATE TABLE IF NOT EXISTS usage (
+  day TEXT, key TEXT, n INTEGER, PRIMARY KEY (day, key)   -- daily cost-guard counters
 );
 CREATE TABLE IF NOT EXISTS events (
   id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT, topic TEXT, payload TEXT
@@ -70,6 +74,7 @@ def execute(sql, params=()):
     with _lock:
         cur = db().execute(sql, params)
         db().commit()
+        DIRTY["since"] = DIRTY["since"] or now()
         return cur
 
 
@@ -84,8 +89,11 @@ def one(sql, params=()):
 
 
 def publish(topic, payload):
-    """Local stand-in for Pub/Sub: append to the events table (the UI polls it)."""
-    execute("INSERT INTO events (ts, topic, payload) VALUES (?, ?, ?)", (iso(now()), topic, json.dumps(payload)))
+    """Events table feeds the live UI; Pub/Sub (when configured) streams the same event into BigQuery."""
+    ts = iso(now())
+    execute("INSERT INTO events (ts, topic, payload) VALUES (?, ?, ?)", (ts, topic, json.dumps(payload)))
+    from .services import cloud
+    cloud.publish(topic, payload, ts)
 
 
 # ---------------- reference data ----------------

@@ -165,6 +165,7 @@ def briefing(fc):
     """Short dispatch briefing written by Gemini from the forecast numbers (cached per night)."""
     if fc["night"] in _briefing_cache:
         return _briefing_cache[fc["night"]]
+    from . import guard
     from .vision import generate_text
     facts = {"night": f"{fc['weekday']} {fc['night']}", "expected_meals_city": fc["expected_meals"],
              "ngo_meal_gap_city": fc["ngo_meal_gap"],
@@ -176,6 +177,7 @@ def briefing(fc):
               "standby, and whether expected surplus exceeds or falls short of NGO demand. Use only these facts:\n"
               + json.dumps(facts))
     try:
+        guard.gemini_call()
         text = generate_text(prompt)
     except Exception as e:
         text = f"(Briefing unavailable: {e})"[:200]

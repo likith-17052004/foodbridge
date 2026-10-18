@@ -28,7 +28,8 @@
   <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
     <div>
       <h1 class="text-2xl font-bold">Impact · Bengaluru</h1>
-      <p class="text-sm text-slate-500">Live donations plus simulated history (real restaurants, NGOs and safety rules; simulated events).</p>
+      <p class="text-sm text-slate-500">Live donations plus simulated history (real restaurants, NGOs and safety rules; simulated events).
+        <span id="source" class="ml-1 text-xs px-2 py-0.5 rounded-full border"></span></p>
     </div>
 
     <section class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="kpis"></section>
@@ -73,6 +74,8 @@ const hbar = (label, value, max, color, note = "") => `
 async function load() {
   const [s, n] = await Promise.all([api("/api/impact"), ngos.length ? ngos : api("/api/ngos")]);
   ngos = n;
+  $("source").textContent = s.source === "bigquery" ? "Headline numbers: BigQuery (refreshed every 5 min)" : "Source: local database";
+  $("source").className += s.source === "bigquery" ? " bg-sky-50 text-sky-800 border-sky-200" : " bg-slate-50 text-slate-600";
   const tiles = [
     ["Meals delivered", nf(s.meals_delivered), `${s.pickups} pickups`],
     ["Food diverted from waste", `${nf(Math.round(s.kg_diverted))} kg`, "0.35 kg per serving"],

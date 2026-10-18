@@ -8,6 +8,6 @@ COPY data/processed ./data/processed
 COPY data/demo_photos ./data/demo_photos
 COPY data/eval/vision_summary.json ./data/eval/vision_summary.json
 COPY scripts/simulate_history.py ./scripts/simulate_history.py
-# Cloud Run sets $PORT. The SQLite file lives in /tmp until the cloud database is wired in.
+# Cloud Run sets $PORT. SQLite in /tmp is restored from / snapshotted to Cloud Storage (app/services/persist.py).
 ENV DB_PATH=/tmp/foodbridge.db UPLOAD_DIR=/tmp/uploads
-CMD ["sh", "-c", "python scripts/simulate_history.py --days 45 --reset && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+CMD ["sh", "-c", "python -m app.bootstrap && exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080} --timeout-graceful-shutdown 8"]

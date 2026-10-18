@@ -9,25 +9,28 @@ from datetime import timedelta, timezone
 
 from .. import config
 from ..store import NGOS
-from .travel import travel
+from .travel import route_matrix, travel
 
 IST = timezone(timedelta(hours=5, minutes=30))
 WEIGHTS = {"need": 0.45, "fit": 0.30, "margin": 0.25}
 
 
-def match(donor: dict, servings: int, diet: str, safe_until, now):
+def match(donor: dict, servings: int, diet: str, safe_until, now, use_routes=False):
+    """use_routes: real traffic-aware times from the Routes API (live donations); history uses the estimate."""
     donor_pt = (donor["lat"], donor["lon"])
     hour = now.astimezone(IST).hour
+    times = route_matrix([(n["ngo_id"], (n["lat"], n["lon"])) for n in NGOS.values()], donor_pt, hour) if use_routes \
+        else {n["ngo_id"]: travel((n["lat"], n["lon"]), donor_pt, hour) for n in NGOS.values()}
     eligible, excluded = [], []
     for ngo in NGOS.values():
-        t = travel((ngo["lat"], ngo["lon"]), donor_pt, hour)
+        t = times[ngo["ngo_id"]]
         round_trip = 2 * t["minutes"] + config.LOADING_MIN
         arrive = now + timedelta(minutes=round_trip)
         margin = (safe_until - arrive).total_seconds() / 60 - config.SERVE_BUFFER_MIN
         row = {"ngo_id": ngo["ngo_id"], "name": ngo["name"], "category": ngo["category"], "ward": ngo.get("ward_name"),
                "lat": ngo["lat"], "lon": ngo["lon"], "km": t["km"], "travel_min": t["minutes"],
                "round_trip_min": round_trip, "arrive_by": arrive.isoformat(timespec="seconds"),
-               "margin_min": round(margin)}
+               "margin_min": round(margin), "travel_source": t.get("method", "estimate")}
         if margin < 0:
             excluded.append(row | {"reason": f"Can't arrive in time ({round_trip} min round trip)"})
             continue

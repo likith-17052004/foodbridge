@@ -102,6 +102,11 @@ def mark_delivered(donation_id):
         round(kg * config.CO2E_PER_KG, 1), offers[0]["created_at"], acc["responded_at"], picked, iso(t),
         d["safe_until"], int(t <= parse(d["safe_until"])), len(offers), match["km"], d["simulated"]))
     publish("donation.delivered", {"donation_id": donation_id, "ngo_id": acc["ngo_id"], "servings": d["servings"]})
+    if d["simulated"] != 2:  # demo-scenario pickups stay out of the warehouse
+        from . import cloud
+        row = query("SELECT * FROM pickups WHERE donation_id=?", (donation_id,))[0]
+        cloud.bq_insert("pickups", [row | {"within_window": bool(row["within_window"]),
+                                           "ngo_category": NGOS[acc["ngo_id"]]["category"]}])
     return {"ok": True}
 
 

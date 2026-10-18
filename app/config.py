@@ -40,3 +40,16 @@ LOADING_MIN = 10  # packing + handover at the donor
 # --- impact factors ---
 KG_PER_SERVING = 0.35  # typical cooked-meal portion
 CO2E_PER_KG = 2.5      # FAO Food Wastage Footprint: 3.3 Gt CO2e / 1.3 Gt food wasted
+
+# --- Google Cloud services (all optional: unset = local stand-in) ---
+GCS_BUCKET = os.getenv("GCS_BUCKET", "")            # photos/ and state/ snapshots
+PUBSUB_TOPIC = os.getenv("PUBSUB_TOPIC", "")        # e.g. foodbridge-events
+BQ_DATASET = os.getenv("BQ_DATASET", "")            # e.g. foodbridge
+ROUTES_API = os.getenv("ROUTES_API", "").lower() in ("1", "true", "on")
+
+# --- cost guardrails ---
+GEMINI_DAILY_LIMIT = int(os.getenv("GEMINI_DAILY_LIMIT", "150"))    # Gemini calls per day, whole app
+UPLOADS_PER_IP_HOUR = int(os.getenv("UPLOADS_PER_IP_HOUR", "20"))
+RUSHES_PER_IP_HOUR = int(os.getenv("RUSHES_PER_IP_HOUR", "3"))
+ROUTES_DAILY_LIMIT = int(os.getenv("ROUTES_DAILY_LIMIT", "150"))    # route-matrix elements per day (~4.5k/month)
+SNAPSHOT_EVERY_S = int(os.getenv("SNAPSHOT_EVERY_S", "30"))

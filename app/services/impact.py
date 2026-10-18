@@ -1,4 +1,4 @@
-"""The four headline numbers + breakdowns for the impact dashboard (local SQLite; BigQuery views later)."""
+"""The four headline numbers + breakdowns for the impact dashboard (BigQuery when configured, else SQLite)."""
 from datetime import timedelta, timezone
 
 from ..store import DONORS, NGOS, parse, query
@@ -6,14 +6,37 @@ from ..store import DONORS, NGOS, parse, query
 IST = timezone(timedelta(hours=5, minutes=30))
 
 
+def _from_bigquery():
+    """Headline numbers straight from the warehouse: one cached query (each query bills >= 10 MB)."""
+    from . import cloud
+    rows = cloud.bq_query(f"""
+        SELECT FORMAT_DATE('%Y-%m-%d', DATE(delivered_at, 'Asia/Kolkata')) AS day, ngo_category AS cat,
+               SUM(servings) AS meals, SUM(kg) AS kg, SUM(co2e_kg) AS co2e, COUNT(*) AS pickups
+        FROM `{cloud.bq_table('pickups')}`
+        GROUP BY GROUPING SETS ((day), (cat), ())""")
+    if not rows:
+        return None
+    total = next(r for r in rows if r["day"] is None and r["cat"] is None)
+    return {
+        "meals_delivered": int(total["meals"] or 0), "kg_diverted": round(total["kg"] or 0, 1),
+        "co2e_avoided_kg": round(total["co2e"] or 0, 1), "pickups": total["pickups"],
+        "by_day": dict(sorted((r["day"], int(r["meals"])) for r in rows if r["day"])),
+        "by_category": dict(sorted(((r["cat"], int(r["meals"])) for r in rows if r["cat"]), key=lambda kv: -kv[1])),
+    }
+
+
 def summary():
-    p = query("SELECT * FROM pickups ORDER BY delivered_at")
-    offered = query("SELECT COUNT(DISTINCT donation_id) n FROM offers")[0]["n"]  # blocked-unsafe food never offered
+    # demo-scenario rows (simulated=2) are excluded everywhere, matching what is logged to BigQuery
+    p = query("SELECT * FROM pickups WHERE simulated != 2 ORDER BY delivered_at")
+    offered = query("""SELECT COUNT(DISTINCT o.donation_id) n FROM offers o JOIN donations d ON d.id = o.donation_id
+                       WHERE d.simulated != 2""")[0]["n"]  # blocked-unsafe food is never offered
     accepted_in_window = query("""
         SELECT COUNT(DISTINCT o.donation_id) n FROM offers o JOIN donations d ON d.id = o.donation_id
-        WHERE o.status='accepted' AND o.responded_at <= d.safe_until""")[0]["n"]
-    status = {r["status"]: r["n"] for r in query("SELECT status, COUNT(*) n FROM donations GROUP BY status")}
-    blocked = query("SELECT COUNT(*) n FROM donations WHERE status='expired' AND id NOT IN (SELECT donation_id FROM offers)")[0]["n"]
+        WHERE o.status='accepted' AND o.responded_at <= d.safe_until AND d.simulated != 2""")[0]["n"]
+    status = {r["status"]: r["n"] for r in query(
+        "SELECT status, COUNT(*) n FROM donations WHERE simulated != 2 GROUP BY status")}
+    blocked = query("""SELECT COUNT(*) n FROM donations WHERE status='expired' AND simulated != 2
+                       AND id NOT IN (SELECT donation_id FROM offers)""")[0]["n"]
 
     by_day, by_cat = {}, {}
     for r in p:
@@ -27,7 +50,8 @@ def summary():
         k = (r["donor_id"], r["ngo_id"])
         routes[k] = routes.get(k, 0) + r["servings"]
 
-    return {
+    out = {
+        "source": "sqlite",
         "meals_delivered": sum(r["servings"] for r in p),
         "kg_diverted": round(sum(r["kg"] for r in p), 1),
         "co2e_avoided_kg": round(sum(r["co2e_kg"] for r in p), 1),
@@ -54,3 +78,7 @@ def summary():
                     "within_window": bool(r["within_window"]), "simulated": bool(r["simulated"])}
                    for r in reversed(p[-8:])],
     }
+    bq = _from_bigquery()
+    if bq:
+        out |= bq | {"source": "bigquery"}
+    return out

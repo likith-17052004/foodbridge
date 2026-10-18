@@ -111,7 +111,8 @@ async function init() {
   const [cfg, ngos, donors] = await Promise.all([api("/api/config"), api("/api/ngos"), api("/api/donors")]);
   ngos.forEach((n) => (NG[n.ngo_id] = n)); donors.forEach((d) => (DN[d.donor_id] = d));
   map.fitBounds(L.latLngBounds(ngos.map((n) => [n.lat, n.lon])).pad(0.1));
-  $("provider").textContent = cfg.gemini ? `Gemini · ${cfg.model.split(":").pop()}` : "Demo mode (no Gemini)";
+  const on = Object.entries(cfg.cloud || {}).filter(([, v]) => v).map(([k]) => ({ storage: "Cloud Storage", pubsub: "Pub/Sub", bigquery: "BigQuery", routes_api: "Routes API" }[k]));
+  $("provider").textContent = (cfg.gemini ? `Gemini ${cfg.model.split(":").pop().replace("gemini-", "")} (Vertex AI)` : "Demo mode (no Gemini)") + (on.length ? ` · ${on.join(" · ")}` : "");
   window.EVAL = await api("/api/eval").catch(() => null);
   tick(); setInterval(tick, 1500); setInterval(clock, 500);
 }
